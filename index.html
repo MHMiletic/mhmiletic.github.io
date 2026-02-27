@@ -16,9 +16,9 @@
       <nav class="burger-menu" id="burgerMenu">
         <ul>
           <li><a href="index.html" id="nav-home">Home</a></li>
-          <li><a href="#about" id="nav-about">About</a></li>
+          <li><a href="about.html" id="nav-about">Who Am I Actually?</a></li>
           <li><a href="projects.html" id="nav-projects">Projects</a></li>
-          <li><a href="#contact" id="nav-contact">Contact</a></li>
+           <li><a href="contact.html" id="nav-contact">Contact</a></li>
         </ul>
       </nav>
     </div>
@@ -35,24 +35,9 @@
     </section>
 
     <section id="projects">
-      <h2>Mock Ups</h2>
-      <p>A collection of Mockups for projects that do not exist.</p>
-      <div class="projects-grid">
-        <article>
-          <h3>BÖTTL</h3>
-          <img src="projects/mockups/bottl.png" alt="BÖTTL project image" class="project-img bottl-img">
-          <p>Who would not want their waterbottle have a bit more flare.</p>
-        </article>
-        <article>
-          <h3>Mountainrange</h3>
-          <img src="projects/mockups/adventure.png" alt="Mountain Range project image" class="project-img">
-          <p>Who would not want a mountain range that follows them around and does their bidding.</p>
-        </article>
-        <article>
-          <h3>Zelda Cook Book</h3>
-          <img src="projects/mockups/COVER_ZELDA_alt.jpg" alt="Zelda Cook Book project image" class="project-img cookbook-img">
-          <p>Who would not want their waterbottle have a bit more flare.</p>
-        </article>
+      <h2>My Latest Projects :)</h2>
+      <div class="projects-grid" id="index-projects-grid">
+        <!-- Articles generated from PROJECTS data -->
       </div>
     </section>
 
@@ -66,6 +51,7 @@
     <p>© <span id="year"></span> Mihajlo Miletic</p>
   </footer>
 
+  <script src="projects-data.js"></script>
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
     // Burger menu toggle
@@ -82,20 +68,19 @@
     } else if (path === 'projects.html') {
       document.getElementById('nav-projects').classList.add('active-page');
     }
+    // build project list on index page, sorted by date descending
+    const container = document.getElementById('index-projects-grid');
+    PROJECTS
+      .filter(p => p.section === 'mockups')
+      .sort((a,b)=> b.date.localeCompare(a.date))
+      .forEach(p => {
+        const art = document.createElement('article');
+        art.setAttribute('data-date', p.date);
+        art.innerHTML = `<h3>${p.title}</h3>
+          <img src="${p.img}" alt="${p.title} project image" class="project-img ${p.imgClass}">
+          <p>${p.desc}</p>`;
+        container.appendChild(art);
+      });
   </script>
 </body>
-        <article>
-          <img src="projects/mockups/bottl.png" alt="BÖTTL project image" class="project-img">
-          <h3>BÖTTL</h3>
-          <p>Who would not want their waterbottle have a bit more flare.</p>
-        </article>
-        <article>
-          <img src="projects/mockups/adventure.png" alt="Mountain Range project image" class="project-img">
-          <h3>Mountain Range</h3>
-          <p>Adventure awaits in the mountain range mockup.</p>
-        </article>
-        <article>
-          <img src="projects/mockups/COVER_ZELDA_alt.jpg" alt="Zelda Cook Book project image" class="project-img">
-          <h3>Zelda Cook Book</h3>
-          <p>A cookbook inspired by the world of Zelda.</p>
-        </article>
+</html>

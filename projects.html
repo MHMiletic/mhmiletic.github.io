@@ -16,9 +16,9 @@
       <nav class="burger-menu" id="burgerMenu">
         <ul>
           <li><a href="index.html" id="nav-home">Home</a></li>
-          <li><a href="#about" id="nav-about">About</a></li>
+          <li><a href="about.html" id="nav-about">Who Am I Actually?</a></li>
           <li><a href="projects.html" id="nav-projects">Projects</a></li>
-          <li><a href="#contact" id="nav-contact">Contact</a></li>
+          <li><a href="contact.html" id="nav-contact">Contact</a></li>
         </ul>
       </nav>
     </div>
@@ -29,8 +29,16 @@
   <main>
     <section id="mockups">
       <h2>Mock Ups</h2>
-      <div class="projects-grid">
-        <!-- Add your mockup project articles here -->
+      <div class="sort-controls">
+        <label>Sort by: 
+          <select id="sortSelector">
+            <option value="date">Date</option>
+            <option value="alpha">Alphabetical</option>
+          </select>
+        </label>
+      </div>
+      <div class="projects-grid" id="projects-grid-mockups">
+        <!-- generated articles -->
       </div>
     </section>
     <section id="socialmedia">
@@ -49,6 +57,7 @@
   <footer>
     <p>© <span id="year"></span> Mihajlo Miletic</p>
   </footer>
+  <script src="projects-data.js"></script>
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
     // Burger menu toggle
@@ -65,6 +74,29 @@
     } else if (path === 'projects.html') {
       document.getElementById('nav-projects').classList.add('active-page');
     }
+    // render projects and add sorting
+    const mockupsContainer = document.getElementById('projects-grid-mockups');
+    function renderMockups(sortBy) {
+      const items = PROJECTS.filter(p=>p.section==='mockups').slice();
+      if (sortBy==='alpha') {
+        items.sort((a,b)=> a.title.localeCompare(b.title));
+      } else {
+        items.sort((a,b)=> b.date.localeCompare(a.date));
+      }
+      mockupsContainer.innerHTML = '';
+      items.forEach(p=>{
+        const art = document.createElement('article');
+        art.setAttribute('data-date', p.date);
+        art.innerHTML = `<h3>${p.title}</h3>
+          <img src="${p.img}" alt="${p.title} project image" class="project-img ${p.imgClass}">
+          <p>${p.desc}</p>`;
+        mockupsContainer.appendChild(art);
+      });
+    }
+    document.getElementById('sortSelector').addEventListener('change', e=>{
+      renderMockups(e.target.value);
+    });
+    renderMockups('date');
   </script>
 </body>
 </html>
