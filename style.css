@@ -1,3 +1,7 @@
+.burger-menu a.active-page {
+  color: #ffe066 !important;
+  font-weight: bold;
+}
 /* Project grid styling */
 .projects-grid {
   display: grid;
@@ -137,7 +141,7 @@ body {
   }
   margin: 0;
   font-family: Arial, sans-serif;
-  background: #0d1117;
+  background: #1a2233;
   color: #e6edf3;
   line-height: 1.6;
 }

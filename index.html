@@ -15,9 +15,10 @@
       </button>
       <nav class="burger-menu" id="burgerMenu">
         <ul>
-          <li><a href="#about">About</a></li>
-          <li><a href="projects.html">Projects</a></li>
-          <li><a href="#contact">Contact</a></li>
+          <li><a href="index.html" id="nav-home">Home</a></li>
+          <li><a href="#about" id="nav-about">About</a></li>
+          <li><a href="projects.html" id="nav-projects">Projects</a></li>
+          <li><a href="#contact" id="nav-contact">Contact</a></li>
         </ul>
       </nav>
     </div>
@@ -74,6 +75,13 @@
       burgerMenu.classList.toggle('open');
       burgerBtn.classList.toggle('active');
     });
+    // Highlight current page in burger menu
+    const path = window.location.pathname.split('/').pop();
+    if (path === '' || path === 'index.html') {
+      document.getElementById('nav-home').classList.add('active-page');
+    } else if (path === 'projects.html') {
+      document.getElementById('nav-projects').classList.add('active-page');
+    }
   </script>
 </body>
         <article>

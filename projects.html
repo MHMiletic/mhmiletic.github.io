@@ -7,6 +7,21 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+    <div class="burger-menu-container">
+      <button class="burger-menu-btn" id="burgerMenuBtn" aria-label="Open menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <nav class="burger-menu" id="burgerMenu">
+        <ul>
+          <li><a href="index.html" id="nav-home">Home</a></li>
+          <li><a href="#about" id="nav-about">About</a></li>
+          <li><a href="projects.html" id="nav-projects">Projects</a></li>
+          <li><a href="#contact" id="nav-contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
   <header>
     <h1>My Projects</h1>
     <a href="index.html" class="hero-button">Back to Home</a>
@@ -36,6 +51,20 @@
   </footer>
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
+    // Burger menu toggle
+    const burgerBtn = document.getElementById('burgerMenuBtn');
+    const burgerMenu = document.getElementById('burgerMenu');
+    burgerBtn.addEventListener('click', () => {
+      burgerMenu.classList.toggle('open');
+      burgerBtn.classList.toggle('active');
+    });
+    // Highlight current page in burger menu
+    const path = window.location.pathname.split('/').pop();
+    if (path === '' || path === 'index.html') {
+      document.getElementById('nav-home').classList.add('active-page');
+    } else if (path === 'projects.html') {
+      document.getElementById('nav-projects').classList.add('active-page');
+    }
   </script>
 </body>
 </html>

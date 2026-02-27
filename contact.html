@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>Contact – Miletic</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+	<div class="burger-menu-container">
+		<button class="burger-menu-btn" id="burgerMenuBtn" aria-label="Open menu">
+			<span></span>
+			<span></span>
+			<span></span>
+		</button>
+		<nav class="burger-menu" id="burgerMenu">
+			<ul>
+				<li><a href="index.html" id="nav-home">Home</a></li>
+				<li><a href="about.html" id="nav-about">About</a></li>
+				<li><a href="projects.html" id="nav-projects">Projects</a></li>
+				<li><a href="contact.html" id="nav-contact">Contact</a></li>
+			</ul>
+		</nav>
+	</div>
+	<header>
+		<h1>Contact</h1>
+	</header>
+	<main>
+		<section>
+			<h2>Contact Information</h2>
+			<p>Email: <a href="mailto:mmiletic853@gmail.com">mmiletic853@gmail.com</a></p>
+			<!-- Add more contact details if needed -->
+		</section>
+	</main>
+	<footer>
+		<p>© <span id="year"></span> Mihajlo Miletic</p>
+	</footer>
+	<script>
+		document.getElementById('year').textContent = new Date().getFullYear();
+		// Burger menu toggle
+		const burgerBtn = document.getElementById('burgerMenuBtn');
+		const burgerMenu = document.getElementById('burgerMenu');
+		burgerBtn.addEventListener('click', () => {
+			burgerMenu.classList.toggle('open');
+			burgerBtn.classList.toggle('active');
+		});
+		// Highlight current page in burger menu
+		const path = window.location.pathname.split('/').pop();
+		if (path === '' || path === 'index.html') {
+			document.getElementById('nav-home').classList.add('active-page');
+		} else if (path === 'projects.html') {
+			document.getElementById('nav-projects').classList.add('active-page');
+		} else if (path === 'about.html') {
+			document.getElementById('nav-about').classList.add('active-page');
+		} else if (path === 'contact.html') {
+			document.getElementById('nav-contact').classList.add('active-page');
+		}
+	</script>
+</body>
+</html>
