@@ -7,6 +7,20 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+    <div class="burger-menu-container">
+      <button class="burger-menu-btn" id="burgerMenuBtn" aria-label="Open menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <nav class="burger-menu" id="burgerMenu">
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="projects.html">Projects</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
   <header>
     <h1>Mihajlo</h1>
     <p>Developer • Designer • Tinkerer • Tinkerer</p>
@@ -25,17 +39,17 @@
       <div class="projects-grid">
         <article>
           <h3>BÖTTL</h3>
-          <img src="https://via.placeholder.com/300x300?text=BÖTTL" alt="BÖTTL project image" class="project-img">
+          <img src="projects/mockups/bottl.png" alt="BÖTTL project image" class="project-img bottl-img">
           <p>Who would not want their waterbottle have a bit more flare.</p>
         </article>
         <article>
-          <h3>GHOST</h3>
-          <img src="https://via.placeholder.com/300x300?text=GHOST" alt="GHOST project image" class="project-img">
-          <p>Who would not want a ghost that follows them around and does their bidding.</p>
+          <h3>Mountainrange</h3>
+          <img src="projects/mockups/adventure.png" alt="Mountain Range project image" class="project-img">
+          <p>Who would not want a mountain range that follows them around and does their bidding.</p>
         </article>
         <article>
-          <h3>BÖTTL</h3>
-          <img src="https://via.placeholder.com/300x300?text=BÖTTL" alt="BÖTTL project image" class="project-img">
+          <h3>Zelda Cook Book</h3>
+          <img src="projects/mockups/COVER_ZELDA_alt.jpg" alt="Zelda Cook Book project image" class="project-img cookbook-img">
           <p>Who would not want their waterbottle have a bit more flare.</p>
         </article>
       </div>
@@ -53,6 +67,27 @@
 
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
+    // Burger menu toggle
+    const burgerBtn = document.getElementById('burgerMenuBtn');
+    const burgerMenu = document.getElementById('burgerMenu');
+    burgerBtn.addEventListener('click', () => {
+      burgerMenu.classList.toggle('open');
+      burgerBtn.classList.toggle('active');
+    });
   </script>
 </body>
-</html>
+        <article>
+          <img src="projects/mockups/bottl.png" alt="BÖTTL project image" class="project-img">
+          <h3>BÖTTL</h3>
+          <p>Who would not want their waterbottle have a bit more flare.</p>
+        </article>
+        <article>
+          <img src="projects/mockups/adventure.png" alt="Mountain Range project image" class="project-img">
+          <h3>Mountain Range</h3>
+          <p>Adventure awaits in the mountain range mockup.</p>
+        </article>
+        <article>
+          <img src="projects/mockups/COVER_ZELDA_alt.jpg" alt="Zelda Cook Book project image" class="project-img">
+          <h3>Zelda Cook Book</h3>
+          <p>A cookbook inspired by the world of Zelda.</p>
+        </article>

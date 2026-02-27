@@ -23,9 +23,28 @@
   width: 220px;
   height: 220px;
   object-fit: cover;
+  object-position: top;
   border-radius: 12px;
   margin-bottom: 1rem;
   background: #2e2e2e;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1), height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Custom pop-out effect for BÖTTL and Cook Book */
+.project-img.bottl-img,
+.project-img.cookbook-img {
+  object-position: top;
+  display: block;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.project-img.bottl-img:hover,
+.project-img.cookbook-img:hover {
+  transform: scale(1.15);
+  height: 400px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+  z-index: 2;
 }
 
 .projects-grid h3 {
@@ -37,6 +56,85 @@
   font-size: 1rem;
 }
 body {
+  /* Burger menu styles */
+  .burger-menu-container {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    z-index: 100;
+  }
+
+  .burger-menu-btn {
+    width: 44px;
+    height: 44px;
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .burger-menu-btn span {
+    display: block;
+    width: 24px;
+    height: 3px;
+    background: #e6edf3;
+    margin: 4px 0;
+    border-radius: 2px;
+    transition: 0.3s;
+  }
+  .burger-menu-btn.active span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+  .burger-menu-btn.active span:nth-child(2) {
+    opacity: 0;
+  }
+  .burger-menu-btn.active span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+  .burger-menu {
+    position: fixed;
+    top: 24px;
+    right: 80px;
+    width: 220px;
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    transform: translateX(300px);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 99;
+  }
+  .burger-menu.open {
+    transform: translateX(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .burger-menu ul {
+    list-style: none;
+    margin: 0;
+    padding: 1rem;
+  }
+  .burger-menu li {
+    margin-bottom: 1rem;
+  }
+  .burger-menu li:last-child {
+    margin-bottom: 0;
+  }
+  .burger-menu a {
+    color: #e6edf3;
+    text-decoration: none;
+    font-size: 1.2rem;
+    transition: color 0.2s;
+  }
+  .burger-menu a:hover {
+    color: #58a6ff;
+  }
   margin: 0;
   font-family: Arial, sans-serif;
   background: #0d1117;

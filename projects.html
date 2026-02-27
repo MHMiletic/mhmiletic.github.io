@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Projects – Miletic</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>My Projects</h1>
+    <a href="index.html" class="hero-button">Back to Home</a>
+  </header>
+  <main>
+    <section id="mockups">
+      <h2>Mock Ups</h2>
+      <div class="projects-grid">
+        <!-- Add your mockup project articles here -->
+      </div>
+    </section>
+    <section id="socialmedia">
+      <h2>Social Media</h2>
+      <div class="projects-grid">
+        <!-- Add your social media project articles here -->
+      </div>
+    </section>
+    <section id="personalprojects">
+      <h2>Personal Projects</h2>
+      <div class="projects-grid">
+        <!-- Add your personal project articles here -->
+      </div>
+    </section>
+  </main>
+  <footer>
+    <p>© <span id="year"></span> Mihajlo Miletic</p>
+  </footer>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
