@@ -1,0 +1,36 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #0d1117;
+  color: #e6edf3;
+  line-height: 1.6;
+}
+
+header {
+  text-align: center;
+  padding: 3rem 1rem;
+}
+
+main {
+  max-width: 800px;
+  margin: auto;
+  padding: 1rem;
+}
+
+h2 {
+  margin-top: 2rem;
+  border-bottom: 1px solid #30363d;
+  padding-bottom: 0.3rem;
+}
+
+article {
+  background: #161b22;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+  border: 1px solid #30363d;
+}
+
+a {
+  color: #58a6ff;
+}
