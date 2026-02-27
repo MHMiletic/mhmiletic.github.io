@@ -1,3 +1,41 @@
+/* Project grid styling */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.projects-grid article {
+  background: #161b22;
+  border-radius: 16px;
+  border: 1px solid #30363d;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 1.5rem 1rem;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  min-width: 0;
+}
+
+.project-img {
+  width: 220px;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  background: #2e2e2e;
+}
+
+.projects-grid h3 {
+  margin: 0.5rem 0 0.2rem 0;
+  font-size: 1.3rem;
+}
+.projects-grid p {
+  text-align: center;
+  font-size: 1rem;
+}
 body {
   margin: 0;
   font-family: Arial, sans-serif;
