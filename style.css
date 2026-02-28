@@ -5,9 +5,14 @@
 /* Project grid styling */
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  /* three items across comfortably; allow shrink but keep decent size */
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
   gap: 2rem;
   margin-top: 2rem;
+  width: 100%;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .projects-grid article {
@@ -21,17 +26,23 @@
   padding: 1.5rem 1rem;
   box-shadow: 0 4px 16px rgba(0,0,0,0.12);
   min-width: 0;
+  /* allow smooth resizing when the image grows */
+  transition: width 0.3s ease, height 0.3s ease;
+  overflow: visible;
 }
 
+/* remove hover flex rule */
+
 .project-img {
-  width: 220px;
-  height: 220px;
+  width: 396px;
+  height: 396px;
   object-fit: cover;
   object-position: top;
   border-radius: 12px;
   margin-bottom: 1rem;
   background: #2e2e2e;
-  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1), height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: width 0.3s ease, height 0.3s ease, transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: top center;
 }
 
 /* Custom pop-out effect for BÖTTL and Cook Book */
@@ -152,9 +163,11 @@ header {
 }
 
 main {
-  max-width: 800px;
+  /* allow sections to span wider than before */
+  max-width: none;
+  width: 100%;
   margin: auto;
-  padding: 1rem;
+  padding: 1rem 2rem;
 }
 
 h2 {
@@ -184,4 +197,20 @@ a {
   border: 1px solid #30363d;
   border-radius: 4px;
   padding: 0.3rem;
+}
+
+button.load-more {
+  display: block;
+  margin: 1rem auto 2rem auto;
+  padding: 0.6rem 1.2rem;
+  background: #58a6ff;
+  color: #161b22;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+button.load-more:hover {
+  background: #79c0ff;
 }

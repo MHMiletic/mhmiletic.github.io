@@ -40,6 +40,7 @@
       <div class="projects-grid" id="projects-grid-mockups">
         <!-- generated articles -->
       </div>
+      <button class="load-more" data-section="mockups">Load more</button>
     </section>
     <section id="socialmedia">
       <h2>Social Media</h2>
@@ -47,11 +48,19 @@
         <!-- Add your social media project articles here -->
       </div>
     </section>
+    <section id="hoodies">
+      <h2>Hoodies</h2>
+      <div class="projects-grid" id="projects-grid-hoodies">
+        <!-- generated hoodies articles -->
+      </div>
+      <button class="load-more" data-section="hoodies">Load more</button>
+    </section>
     <section id="personalprojects">
       <h2>Personal Projects</h2>
-      <div class="projects-grid">
-        <!-- Add your personal project articles here -->
+      <div class="projects-grid" id="projects-grid-personalprojects">
+        <!-- generated personal project articles -->
       </div>
+      <button class="load-more" data-section="personalprojects">Load more</button>
     </section>
   </main>
   <footer>
@@ -93,10 +102,103 @@
         mockupsContainer.appendChild(art);
       });
     }
-    document.getElementById('sortSelector').addEventListener('change', e=>{
-      renderMockups(e.target.value);
+    // global state for pagination
+    const visibleCounts = {
+      mockups: 3,
+      hoodies: 3,
+      personalprojects: 3
+    };
+    let currentSort = 'date';
+
+    // helper to add hover-zoom behaviour (same as index page)
+    function addZoom(img) {
+      img.addEventListener('mouseenter', () => {
+        const art = img.closest('article');
+        const w = img.naturalWidth;
+        const h = img.naturalHeight;
+        const currentW = img.clientWidth;
+        const currentH = img.clientHeight;
+        const scale = 1.2;
+        if (w > h) {
+          img.style.height = currentH * scale + 'px';
+          img.style.width = 'auto';
+        } else {
+          img.style.width = currentW * scale + 'px';
+          img.style.height = 'auto';
+        }
+        if (art) {
+          art.style.width = img.clientWidth + 'px';
+        }
+      });
+      img.addEventListener('mouseleave', () => {
+        const art = img.closest('article');
+        img.style.width = '';
+        img.style.height = '';
+        if (art) art.style.width = '';
+      });
+    }
+
+    function renderSection(section, containerId) {
+      const container = document.getElementById(containerId);
+      let items = PROJECTS.filter(p => p.section === section).slice();
+      // for hoodies, only display the first ("1") image variant
+      if (section === 'hoodies') {
+        items = items.filter(p => p.img.match(/1\.png$/));
+      }
+      if (currentSort === 'alpha') {
+        items.sort((a,b) => a.title.localeCompare(b.title));
+      } else {
+        items.sort((a,b) => b.date.localeCompare(a.date));
+      }
+      const count = visibleCounts[section] || items.length;
+      container.innerHTML = '';
+      items.slice(0, count).forEach(p => {
+        const art = document.createElement('article');
+        art.setAttribute('data-date', p.date);
+        // for hoodies wrap image in link to detail page
+        let imgHtml = `<img src="${p.img}" alt="${p.title} project image" class="project-img ${p.imgClass}">`;
+        if (section === 'hoodies') {
+          // derive base name without trailing number and extension
+          const filename = p.img.split('/').pop();
+          const base = filename.replace(/\d+\.png$/, '');
+          imgHtml = `<a href="projects/hoodies/${base}.html">${imgHtml}</a>`;
+        }
+        art.innerHTML = `<h3>${p.title}</h3>\n          ${imgHtml}\n          <p>${p.desc}</p>`;
+        container.appendChild(art);
+        // apply zoom if image exists
+        const imgEl = art.querySelector('img');
+        if (imgEl) addZoom(imgEl);
+      });      // toggle load more button
+      const button = document.querySelector(`button.load-more[data-section="${section}"]`);
+      if (items.length <= count) {
+        button.style.display = 'none';
+      } else {
+        button.style.display = 'block';
+      }
+    }
+
+    function renderAll() {
+      renderSection('mockups', 'projects-grid-mockups');
+      renderSection('hoodies', 'projects-grid-hoodies');
+      renderSection('personalprojects', 'projects-grid-personalprojects');
+    }
+
+    document.getElementById('sortSelector').addEventListener('change', e => {
+      currentSort = e.target.value;
+      renderAll();
     });
-    renderMockups('date');
+
+    // setup load more buttons
+    document.querySelectorAll('button.load-more').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const sec = btn.getAttribute('data-section');
+        visibleCounts[sec] = (visibleCounts[sec] || 0) + 6;
+        renderSection(sec, `projects-grid-${sec}`);
+      });
+    });
+
+    // initial render
+    renderAll();
   </script>
 </body>
 </html>

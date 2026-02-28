@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CSM Hoodie</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../../style.css">
+  <style>
+    .hoodie-viewer { display: flex; flex-direction: column; align-items: center; padding: 2rem; }
+    .main-img-container img { width: 650px; max-width: 100%; height: auto; border-radius: 12px; }
+    .thumbs { display: flex; gap: 1rem; margin-top: 1rem; }
+    .thumb { width: 200px; cursor: pointer; border-radius: 8px; }
+  </style>
+</head>
+<body>
+  <header><h1>CSM Hoodie</h1></header>
+  <main class="hoodie-viewer">
+    <div class="main-img-container"><img id="mainImg" src="csm1.png" alt="CSM variant"></div>
+    <div class="thumbs"></div>
+  </main>
+  <footer><a href="../../projects.html">Back to Projects</a></footer>
+  <script>
+    const images = ['csm1.png','csm2.png','csm3.png'];
+    let current = 0;
+    const mainImg = document.getElementById('mainImg');
+    const thumbsContainer = document.querySelector('.thumbs');
+    function updateThumbnails() {
+      thumbsContainer.innerHTML = '';
+      images.forEach((src,index) => {
+        if (index === current) return;
+        const img = document.createElement('img');
+        img.src = src;
+        img.className = 'thumb';
+        img.addEventListener('click', () => {
+          current = index;
+          mainImg.src = images[current];
+          updateThumbnails();
+        });
+        thumbsContainer.appendChild(img);
+      });
+    }
+    updateThumbnails();
+  </script>
+</body>
+</html>
