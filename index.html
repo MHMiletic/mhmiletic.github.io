@@ -23,7 +23,7 @@
       </nav>
     </div>
   <header>
-    <h1>Mihajlo</h1>
+    <h1 class="big-name">mihajlo<br>miletic</h1>
     <p>Developer • Designer • Tinkerer • Tinkerer</p>
     <a href="#projects" class="hero-button">View my work</a>
   </header>
@@ -68,37 +68,6 @@
     } else if (path === 'projects.html') {
       document.getElementById('nav-projects').classList.add('active-page');
     }
-    // helper to add hover-zoom behaviour
-    function addZoom(img) {
-      img.addEventListener('mouseenter', () => {
-        const art = img.closest('article');
-        const w = img.naturalWidth;
-        const h = img.naturalHeight;
-        const currentW = img.clientWidth;
-        const currentH = img.clientHeight;
-        const scale = 1.2;
-        if (w > h) {
-          // landscape: increase height
-          img.style.height = currentH * scale + 'px';
-          img.style.width = 'auto';
-        } else {
-          // portrait or square: increase width
-          img.style.width = currentW * scale + 'px';
-          img.style.height = 'auto';
-        }
-        // adjust container width to match new image width
-        if (art) {
-          art.style.width = img.clientWidth + 'px';
-        }
-      });
-      img.addEventListener('mouseleave', () => {
-        const art = img.closest('article');
-        img.style.width = '';
-        img.style.height = '';
-        if (art) art.style.width = '';
-      });
-    }
-
     // build project list on index page, sorted by date descending
     const container = document.getElementById('index-projects-grid');
     PROJECTS
@@ -111,7 +80,6 @@
           <img src="${p.img}" alt="${p.title} project image" class="project-img ${p.imgClass}">
           <p>${p.desc}</p>`;
         container.appendChild(art);
-        addZoom(art.querySelector('img'));
       });
   </script>
 </body>

@@ -110,34 +110,6 @@
     };
     let currentSort = 'date';
 
-    // helper to add hover-zoom behaviour (same as index page)
-    function addZoom(img) {
-      img.addEventListener('mouseenter', () => {
-        const art = img.closest('article');
-        const w = img.naturalWidth;
-        const h = img.naturalHeight;
-        const currentW = img.clientWidth;
-        const currentH = img.clientHeight;
-        const scale = 1.2;
-        if (w > h) {
-          img.style.height = currentH * scale + 'px';
-          img.style.width = 'auto';
-        } else {
-          img.style.width = currentW * scale + 'px';
-          img.style.height = 'auto';
-        }
-        if (art) {
-          art.style.width = img.clientWidth + 'px';
-        }
-      });
-      img.addEventListener('mouseleave', () => {
-        const art = img.closest('article');
-        img.style.width = '';
-        img.style.height = '';
-        if (art) art.style.width = '';
-      });
-    }
-
     function renderSection(section, containerId) {
       const container = document.getElementById(containerId);
       let items = PROJECTS.filter(p => p.section === section).slice();
@@ -165,10 +137,8 @@
         }
         art.innerHTML = `<h3>${p.title}</h3>\n          ${imgHtml}\n          <p>${p.desc}</p>`;
         container.appendChild(art);
-        // apply zoom if image exists
-        const imgEl = art.querySelector('img');
-        if (imgEl) addZoom(imgEl);
-      });      // toggle load more button
+      });
+      // toggle load more button
       const button = document.querySelector(`button.load-more[data-section="${section}"]`);
       if (items.length <= count) {
         button.style.display = 'none';

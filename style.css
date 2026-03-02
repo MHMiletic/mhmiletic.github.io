@@ -1,5 +1,15 @@
+:root {
+  /* color palette for eggshell/ dark navy theme */
+  --bg-color: #F0EAD6;      /* eggshell */
+  --text-color: #001122;    /* very dark navy */
+  --card-bg: #ffffff;
+  --card-border: #001122;
+  --accent: #001122;
+  --muted-bg: #e8e8e8;
+}
+
 .burger-menu a.active-page {
-  color: #ffe066 !important;
+  color: var(--accent) !important;
   font-weight: bold;
 }
 /* Project grid styling */
@@ -16,9 +26,9 @@
 }
 
 .projects-grid article {
-  background: #161b22;
+  background: var(--card-bg);
   border-radius: 16px;
-  border: 1px solid #30363d;
+  border: 1px solid var(--card-border);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -26,12 +36,7 @@
   padding: 1.5rem 1rem;
   box-shadow: 0 4px 16px rgba(0,0,0,0.12);
   min-width: 0;
-  /* allow smooth resizing when the image grows */
-  transition: width 0.3s ease, height 0.3s ease;
-  overflow: visible;
 }
-
-/* remove hover flex rule */
 
 .project-img {
   width: 396px;
@@ -40,9 +45,8 @@
   object-position: top;
   border-radius: 12px;
   margin-bottom: 1rem;
-  background: #2e2e2e;
-  transition: width 0.3s ease, height 0.3s ease, transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  transform-origin: top center;
+  background: var(--muted-bg);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1), height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Custom pop-out effect for BÖTTL and Cook Book */
@@ -82,8 +86,8 @@ body {
   .burger-menu-btn {
     width: 44px;
     height: 44px;
-    background: #161b22;
-    border: 1px solid #30363d;
+    background: var(--bg-color);
+    border: 1px solid var(--card-border);
     border-radius: 50%;
     display: flex;
     flex-direction: column;
@@ -96,7 +100,7 @@ body {
     display: block;
     width: 24px;
     height: 3px;
-    background: #e6edf3;
+    background: var(--text-color);
     margin: 4px 0;
     border-radius: 2px;
     transition: 0.3s;
@@ -115,8 +119,8 @@ body {
     top: 24px;
     right: 80px;
     width: 220px;
-    background: #161b22;
-    border: 1px solid #30363d;
+    background: var(--bg-color);
+    border: 1px solid var(--card-border);
     border-radius: 16px;
     box-shadow: 0 4px 16px rgba(0,0,0,0.12);
     transform: translateX(300px);
@@ -142,24 +146,37 @@ body {
     margin-bottom: 0;
   }
   .burger-menu a {
-    color: #e6edf3;
+    color: var(--text-color);
     text-decoration: none;
     font-size: 1.2rem;
     transition: color 0.2s;
   }
   .burger-menu a:hover {
-    color: #58a6ff;
+    color: var(--accent);
   }
   margin: 0;
   font-family: Arial, sans-serif;
-  background: #1a2233;
-  color: #e6edf3;
+  background: var(--bg-color);
+  color: var(--text-color);
   line-height: 1.6;
 }
 
 header {
   text-align: center;
   padding: 3rem 1rem;
+}
+
+/* large two-line lowercase name on index */
+.big-name {
+  font-size: 4rem;
+  line-height: 1;
+  text-transform: lowercase;
+  margin: 0;
+}
+@media (max-width: 600px) {
+  .big-name {
+    font-size: 3rem;
+  }
 }
 
 main {
@@ -172,29 +189,29 @@ main {
 
 h2 {
   margin-top: 2rem;
-  border-bottom: 1px solid #30363d;
+  border-bottom: 1px solid var(--card-border);
   padding-bottom: 0.3rem;
 }
 
 article {
-  background: #161b22;
+  background: var(--card-bg);
   padding: 1rem;
   border-radius: 8px;
   margin-top: 1rem;
-  border: 1px solid #30363d;
+  border: 1px solid var(--card-border);
 }
 
 a {
-  color: #58a6ff;
+  color: var(--accent);
 }
 
 .sort-controls {
   margin-bottom: 1rem;
 }
 .sort-controls select {
-  background: #161b22;
-  color: #e6edf3;
-  border: 1px solid #30363d;
+  background: var(--bg-color);
+  color: var(--text-color);
+  border: 1px solid var(--card-border);
   border-radius: 4px;
   padding: 0.3rem;
 }
@@ -203,8 +220,8 @@ button.load-more {
   display: block;
   margin: 1rem auto 2rem auto;
   padding: 0.6rem 1.2rem;
-  background: #58a6ff;
-  color: #161b22;
+  background: var(--accent);
+  color: var(--card-bg);
   border: none;
   border-radius: 6px;
   font-size: 1rem;
@@ -212,5 +229,5 @@ button.load-more {
   transition: background 0.2s;
 }
 button.load-more:hover {
-  background: #79c0ff;
+  background: #002244;
 }
