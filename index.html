@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <title>Miletic – Portfolio</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Portfolio of Mihajlo Miletic – design, creative development, and visual experiments." />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -23,8 +24,21 @@
       </nav>
     </div>
   <header>
-    <h1 class="big-name">mihajlo<br>miletic</h1>
-    <p>Developer • Designer • Tinkerer • Tinkerer</p>
+    <div class="hero-title-row">
+      <h1 class="big-name">mihajlo<br>miletic</h1>
+      <div class="roles-container">
+        <div class="role-list">
+          <span>developer</span>
+          <span>designer</span>
+          <span>tinkerer</span>
+          <span>architect</span>
+          <span>traveler</span>
+          <span>developer</span>
+          <span>designer</span>
+          <span>tinkerer</span>
+        </div>
+      </div>
+    </div>
     <a href="#projects" class="hero-button">View my work</a>
   </header>
 
@@ -32,6 +46,43 @@
     <section id="about">
       <h2>About Me</h2>
       <p>Hi! I'm Mihajlo, or Mika for short, and this is a portfolio showcasing my work in design, tinkering, and who I am.</p>
+      <div class="quick-links">
+        <a href="about.html" class="hero-button">Read full profile</a>
+        <a href="contact.html" class="hero-button">Start a project</a>
+      </div>
+      <div class="style-switcher" id="styleSwitcher" aria-label="Card style options">
+        <span>Card style:</span>
+        <button type="button" class="active" data-style="default">Default</button>
+        <button type="button" data-style="poster">Poster</button>
+        <button type="button" data-style="crt">CRT</button>
+        <button type="button" id="retroSoundToggle" class="retro-sound-toggle">Retro Sound: Off</button>
+      </div>
+      <div class="style-switcher" id="colorSwitcher" aria-label="Color theme options">
+        <span>Color theme:</span>
+        <button type="button" class="active" data-theme="default">Default</button>
+        <button type="button" data-theme="lilac">Lilac</button>
+        <button type="button" data-theme="sunset">Sunset</button>
+        <button type="button" data-theme="mint">Mint</button>
+        <button type="button" data-theme="night">Night</button>
+      </div>
+    </section>
+
+    <section id="highlights">
+      <h2>What I Bring</h2>
+      <div class="intro-highlight-grid">
+        <article class="highlight-card">
+          <h3>Creative Direction</h3>
+          <p>I shape visual concepts from rough idea to polished output with a strong focus on storytelling.</p>
+        </article>
+        <article class="highlight-card">
+          <h3>Design + Build</h3>
+          <p>I combine interface design and front-end implementation to make ideas ship faster.</p>
+        </article>
+        <article class="highlight-card">
+          <h3>Iterative Process</h3>
+          <p>I test quickly, refine deliberately, and improve details through feedback and experimentation.</p>
+        </article>
+      </div>
     </section>
 
     <section id="projects">
@@ -39,6 +90,12 @@
       <div class="projects-grid" id="index-projects-grid">
         <!-- Articles generated from PROJECTS data -->
       </div>
+      <a href="projects.html" class="hero-button">Browse all projects</a>
+    </section>
+
+    <section id="spotlight">
+      <h2>Project Spotlight</h2>
+      <article id="spotlight-card" class="spotlight-card"></article>
     </section>
 
     <section id="contact">
@@ -57,17 +114,180 @@
     // Burger menu toggle
     const burgerBtn = document.getElementById('burgerMenuBtn');
     const burgerMenu = document.getElementById('burgerMenu');
+
+    const closeMenu = () => {
+      burgerMenu.classList.remove('open');
+      burgerBtn.classList.remove('active');
+      burgerBtn.setAttribute('aria-expanded', 'false');
+    };
+
+    burgerBtn.setAttribute('aria-expanded', 'false');
     burgerBtn.addEventListener('click', () => {
       burgerMenu.classList.toggle('open');
       burgerBtn.classList.toggle('active');
+      burgerBtn.setAttribute('aria-expanded', burgerMenu.classList.contains('open') ? 'true' : 'false');
     });
+
+    document.addEventListener('click', (event) => {
+      if (!burgerMenu.contains(event.target) && !burgerBtn.contains(event.target)) {
+        closeMenu();
+      }
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        closeMenu();
+      }
+    });
+
     // Highlight current page in burger menu
     const path = window.location.pathname.split('/').pop();
     if (path === '' || path === 'index.html') {
       document.getElementById('nav-home').classList.add('active-page');
     } else if (path === 'projects.html') {
       document.getElementById('nav-projects').classList.add('active-page');
+    } else if (path === 'about.html') {
+      document.getElementById('nav-about').classList.add('active-page');
+    } else if (path === 'contact.html') {
+      document.getElementById('nav-contact').classList.add('active-page');
     }
+
+    const styleClassMap = {
+      default: '',
+      poster: 'card-style-poster',
+      crt: 'card-style-crt'
+    };
+    const colorThemeMap = {
+      default: '',
+      lilac: 'theme-lilac',
+      sunset: 'theme-sunset',
+      mint: 'theme-mint',
+      night: 'theme-night'
+    };
+
+    const styleButtons = document.querySelectorAll('#styleSwitcher button[data-style]');
+    const colorThemeButtons = document.querySelectorAll('#colorSwitcher button[data-theme]');
+
+    const applyStyle = (style) => {
+      Object.values(styleClassMap).forEach(styleClass => {
+        if (styleClass) {
+          document.body.classList.remove(styleClass);
+        }
+      });
+      if (styleClassMap[style]) {
+        document.body.classList.add(styleClassMap[style]);
+      }
+      styleButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.style === style));
+      localStorage.setItem('preferredCardStyle', style);
+    };
+
+    const applyTheme = (theme) => {
+      Object.values(colorThemeMap).forEach(themeClass => {
+        if (themeClass) {
+          document.body.classList.remove(themeClass);
+        }
+      });
+      if (colorThemeMap[theme]) {
+        document.body.classList.add(colorThemeMap[theme]);
+      }
+      colorThemeButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.theme === theme));
+      localStorage.setItem('preferredColorTheme', theme);
+    };
+
+    applyStyle(localStorage.getItem('preferredCardStyle') || 'default');
+    applyTheme(localStorage.getItem('preferredColorTheme') || 'default');
+
+    styleButtons.forEach(button => {
+      button.addEventListener('click', () => applyStyle(button.dataset.style));
+    });
+    colorThemeButtons.forEach(button => {
+      button.addEventListener('click', () => applyTheme(button.dataset.theme));
+    });
+
+    const retroSoundToggle = document.getElementById('retroSoundToggle');
+    let retroSoundEnabled = localStorage.getItem('retroSoundEnabled') === 'true';
+    let audioContext = null;
+    let lastBeepAt = 0;
+
+    const updateSoundToggleLabel = () => {
+      retroSoundToggle.textContent = `Retro Sound: ${retroSoundEnabled ? 'On' : 'Off'}`;
+      retroSoundToggle.classList.toggle('active', retroSoundEnabled);
+    };
+
+    const ensureAudioContext = () => {
+      if (!audioContext) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContextClass) {
+          return null;
+        }
+        audioContext = new AudioContextClass();
+      }
+      if (audioContext.state === 'suspended') {
+        audioContext.resume();
+      }
+      return audioContext;
+    };
+
+    const playRetroBeep = () => {
+      if (!retroSoundEnabled || !document.body.classList.contains('card-style-poster')) {
+        return;
+      }
+      const now = performance.now();
+      if (now - lastBeepAt < 85) {
+        return;
+      }
+      lastBeepAt = now;
+
+      const context = ensureAudioContext();
+      if (!context || context.state !== 'running') {
+        return;
+      }
+
+      const oscillator = context.createOscillator();
+      const gainNode = context.createGain();
+      oscillator.type = 'square';
+      oscillator.frequency.setValueAtTime(880, context.currentTime);
+      oscillator.frequency.setValueAtTime(620, context.currentTime + 0.035);
+      gainNode.gain.setValueAtTime(0.0001, context.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.035, context.currentTime + 0.01);
+      gainNode.gain.exponentialRampToValueAtTime(0.0001, context.currentTime + 0.08);
+      oscillator.connect(gainNode);
+      gainNode.connect(context.destination);
+      oscillator.start();
+      oscillator.stop(context.currentTime + 0.09);
+    };
+
+    updateSoundToggleLabel();
+    retroSoundToggle.addEventListener('click', () => {
+      retroSoundEnabled = !retroSoundEnabled;
+      localStorage.setItem('retroSoundEnabled', String(retroSoundEnabled));
+      updateSoundToggleLabel();
+      if (retroSoundEnabled) {
+        ensureAudioContext();
+        playRetroBeep();
+      }
+    });
+
+    document.addEventListener('pointerover', (event) => {
+      const currentTarget = event.target.closest('a,button,input,select,textarea,.filter-chip,.hero-button');
+      if (!currentTarget) {
+        return;
+      }
+      const previousTarget = event.relatedTarget && event.relatedTarget.closest
+        ? event.relatedTarget.closest('a,button,input,select,textarea,.filter-chip,.hero-button')
+        : null;
+      if (currentTarget === previousTarget) {
+        return;
+      }
+      playRetroBeep();
+    });
+
+    document.addEventListener('focusin', (event) => {
+      if (event.target.closest('a,button,input,select,textarea,.filter-chip,.hero-button')) {
+        playRetroBeep();
+      }
+    });
+
     // build project list on index page, sorted by date descending
     const container = document.getElementById('index-projects-grid');
     PROJECTS
@@ -81,6 +301,20 @@
           <p>${p.desc}</p>`;
         container.appendChild(art);
       });
+
+    const spotlightContainer = document.getElementById('spotlight-card');
+    const projectsWithRealDates = PROJECTS.filter(p => p.date !== 'YYYY-MM-DD');
+    const spotlightPool = projectsWithRealDates.length ? projectsWithRealDates : PROJECTS;
+    const spotlightProject = spotlightPool[Math.floor(Math.random() * spotlightPool.length)];
+    const categoryLabel = spotlightProject.section === 'personalprojects'
+      ? 'Personal Projects'
+      : spotlightProject.section.charAt(0).toUpperCase() + spotlightProject.section.slice(1);
+
+    spotlightContainer.innerHTML = `<h3>${spotlightProject.title}</h3>
+      <img src="${spotlightProject.img}" alt="${spotlightProject.title} spotlight image" class="project-img ${spotlightProject.imgClass}">
+      <p>${spotlightProject.desc}</p>
+      <p class="spotlight-meta">Category: ${categoryLabel}</p>
+      <a href="projects.html#${spotlightProject.section}" class="hero-button">Explore this category</a>`;
   </script>
 </body>
 </html>

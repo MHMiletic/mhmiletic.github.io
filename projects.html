@@ -27,6 +27,19 @@
     <a href="index.html" class="hero-button">Back to Home</a>
   </header>
   <main>
+    <section>
+      <h2>Find Projects</h2>
+      <div class="project-tools">
+        <input id="projectSearch" class="search-input" type="search" placeholder="Search by title or description" aria-label="Search projects" />
+        <div class="filter-chip-row" role="group" aria-label="Filter projects by section">
+          <button class="filter-chip active" data-filter="all">All</button>
+          <button class="filter-chip" data-filter="mockups">Mock Ups</button>
+          <button class="filter-chip" data-filter="hoodies">Hoodies</button>
+          <button class="filter-chip" data-filter="personalprojects">Personal Projects</button>
+        </div>
+      </div>
+      <p id="noProjectResults" class="empty-state" hidden>No projects matched your current filters.</p>
+    </section>
     <section id="mockups">
       <h2>Mock Ups</h2>
       <div class="sort-controls">
@@ -68,13 +81,122 @@
   </footer>
   <script src="projects-data.js"></script>
   <script>
+    const styleClassMap = {
+      default: '',
+      poster: 'card-style-poster',
+      crt: 'card-style-crt'
+    };
+    const colorThemeMap = {
+      default: '',
+      lilac: 'theme-lilac',
+      sunset: 'theme-sunset',
+      mint: 'theme-mint',
+      night: 'theme-night'
+    };
+    const preferredCardStyle = localStorage.getItem('preferredCardStyle');
+    if (preferredCardStyle && styleClassMap[preferredCardStyle]) {
+      document.body.classList.add(styleClassMap[preferredCardStyle]);
+    }
+    const preferredColorTheme = localStorage.getItem('preferredColorTheme');
+    if (preferredColorTheme && colorThemeMap[preferredColorTheme]) {
+      document.body.classList.add(colorThemeMap[preferredColorTheme]);
+    }
+
+    const retroSoundEnabled = localStorage.getItem('retroSoundEnabled') === 'true';
+    let audioContext = null;
+    let lastBeepAt = 0;
+
+    const ensureAudioContext = () => {
+      if (!audioContext) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContextClass) {
+          return null;
+        }
+        audioContext = new AudioContextClass();
+      }
+      if (audioContext.state === 'suspended') {
+        audioContext.resume();
+      }
+      return audioContext;
+    };
+
+    const playRetroBeep = () => {
+      if (!retroSoundEnabled || !document.body.classList.contains('card-style-poster')) {
+        return;
+      }
+      const now = performance.now();
+      if (now - lastBeepAt < 85) {
+        return;
+      }
+      lastBeepAt = now;
+
+      const context = ensureAudioContext();
+      if (!context || context.state !== 'running') {
+        return;
+      }
+
+      const oscillator = context.createOscillator();
+      const gainNode = context.createGain();
+      oscillator.type = 'square';
+      oscillator.frequency.setValueAtTime(880, context.currentTime);
+      oscillator.frequency.setValueAtTime(620, context.currentTime + 0.035);
+      gainNode.gain.setValueAtTime(0.0001, context.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.035, context.currentTime + 0.01);
+      gainNode.gain.exponentialRampToValueAtTime(0.0001, context.currentTime + 0.08);
+      oscillator.connect(gainNode);
+      gainNode.connect(context.destination);
+      oscillator.start();
+      oscillator.stop(context.currentTime + 0.09);
+    };
+
+    document.addEventListener('pointerover', (event) => {
+      const currentTarget = event.target.closest('a,button,input,select,textarea,.filter-chip,.hero-button');
+      if (!currentTarget) {
+        return;
+      }
+      const previousTarget = event.relatedTarget && event.relatedTarget.closest
+        ? event.relatedTarget.closest('a,button,input,select,textarea,.filter-chip,.hero-button')
+        : null;
+      if (currentTarget === previousTarget) {
+        return;
+      }
+      playRetroBeep();
+    });
+
+    document.addEventListener('focusin', (event) => {
+      if (event.target.closest('a,button,input,select,textarea,.filter-chip,.hero-button')) {
+        playRetroBeep();
+      }
+    });
+
     document.getElementById('year').textContent = new Date().getFullYear();
     // Burger menu toggle
     const burgerBtn = document.getElementById('burgerMenuBtn');
     const burgerMenu = document.getElementById('burgerMenu');
+
+    const closeMenu = () => {
+      burgerMenu.classList.remove('open');
+      burgerBtn.classList.remove('active');
+      burgerBtn.setAttribute('aria-expanded', 'false');
+    };
+
+    burgerBtn.setAttribute('aria-expanded', 'false');
     burgerBtn.addEventListener('click', () => {
       burgerMenu.classList.toggle('open');
       burgerBtn.classList.toggle('active');
+      burgerBtn.setAttribute('aria-expanded', burgerMenu.classList.contains('open') ? 'true' : 'false');
+    });
+
+    document.addEventListener('click', (event) => {
+      if (!burgerMenu.contains(event.target) && !burgerBtn.contains(event.target)) {
+        closeMenu();
+      }
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        closeMenu();
+      }
     });
     // Highlight current page in burger menu
     const path = window.location.pathname.split('/').pop();
@@ -82,6 +204,10 @@
       document.getElementById('nav-home').classList.add('active-page');
     } else if (path === 'projects.html') {
       document.getElementById('nav-projects').classList.add('active-page');
+    } else if (path === 'about.html') {
+      document.getElementById('nav-about').classList.add('active-page');
+    } else if (path === 'contact.html') {
+      document.getElementById('nav-contact').classList.add('active-page');
     }
     // render projects and add sorting
     const mockupsContainer = document.getElementById('projects-grid-mockups');
@@ -109,6 +235,18 @@
       personalprojects: 3
     };
     let currentSort = 'date';
+    let activeSectionFilter = 'all';
+    let currentQuery = '';
+
+    const searchableFields = (project) => `${project.title} ${project.desc}`.toLowerCase();
+
+    function applySearchAndSectionFilters(items, section) {
+      return items.filter(item => {
+        const inSection = activeSectionFilter === 'all' || activeSectionFilter === section;
+        const matchesQuery = !currentQuery || searchableFields(item).includes(currentQuery);
+        return inSection && matchesQuery;
+      });
+    }
 
     function renderSection(section, containerId) {
       const container = document.getElementById(containerId);
@@ -122,6 +260,7 @@
       } else {
         items.sort((a,b) => b.date.localeCompare(a.date));
       }
+      items = applySearchAndSectionFilters(items, section);
       const count = visibleCounts[section] || items.length;
       container.innerHTML = '';
       items.slice(0, count).forEach(p => {
@@ -145,17 +284,42 @@
       } else {
         button.style.display = 'block';
       }
+
+      const sectionEl = document.getElementById(section);
+      if (items.length === 0) {
+        sectionEl.style.display = 'none';
+      } else {
+        sectionEl.style.display = 'block';
+      }
     }
 
     function renderAll() {
       renderSection('mockups', 'projects-grid-mockups');
       renderSection('hoodies', 'projects-grid-hoodies');
       renderSection('personalprojects', 'projects-grid-personalprojects');
+
+      const hasVisibleSection = ['mockups', 'hoodies', 'personalprojects']
+        .some(sectionId => document.getElementById(sectionId).style.display !== 'none');
+      document.getElementById('noProjectResults').hidden = hasVisibleSection;
     }
 
     document.getElementById('sortSelector').addEventListener('change', e => {
       currentSort = e.target.value;
       renderAll();
+    });
+
+    document.getElementById('projectSearch').addEventListener('input', (event) => {
+      currentQuery = event.target.value.trim().toLowerCase();
+      renderAll();
+    });
+
+    document.querySelectorAll('.filter-chip').forEach((button) => {
+      button.addEventListener('click', () => {
+        document.querySelectorAll('.filter-chip').forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+        activeSectionFilter = button.getAttribute('data-filter');
+        renderAll();
+      });
     });
 
     // setup load more buttons

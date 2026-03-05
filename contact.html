@@ -29,21 +29,152 @@
 		<section>
 			<h2>Contact Information</h2>
 			<p>Email: <a href="mailto:mmiletic853@gmail.com">mmiletic853@gmail.com</a></p>
-			<!-- Add more contact details if needed -->
+			<div class="contact-links">
+				<button type="button" id="copyEmailBtn" class="hero-button">Copy Email</button>
+				<a href="projects.html">View Projects</a>
+				<a href="about.html">About Me</a>
+			</div>
+		</section>
+		<section>
+			<h2>Quick Inquiry</h2>
+			<form id="contactForm" class="contact-form">
+				<label for="contactName">Name</label>
+				<input id="contactName" name="contactName" type="text" required />
+
+				<label for="contactEmail">Email</label>
+				<input id="contactEmail" name="contactEmail" type="email" required />
+
+				<label for="contactSubject">Subject</label>
+				<input id="contactSubject" name="contactSubject" type="text" required />
+
+				<label for="contactMessage">Message</label>
+				<textarea id="contactMessage" name="contactMessage" rows="6" required></textarea>
+
+				<button type="submit" class="load-more">Send via Email</button>
+			</form>
 		</section>
 	</main>
 	<footer>
 		<p>© <span id="year"></span> Mihajlo Miletic</p>
 	</footer>
 	<script>
+		const styleClassMap = {
+			default: '',
+			poster: 'card-style-poster',
+			crt: 'card-style-crt'
+		};
+		const colorThemeMap = {
+			lilac: 'theme-lilac',
+			sunset: 'theme-sunset',
+			mint: 'theme-mint',
+			night: 'theme-night'
+		};
+		const preferredCardStyle = localStorage.getItem('preferredCardStyle');
+		if (preferredCardStyle && styleClassMap[preferredCardStyle]) {
+			document.body.classList.add(styleClassMap[preferredCardStyle]);
+		}
+		const preferredColorTheme = localStorage.getItem('preferredColorTheme');
+		if (preferredColorTheme && colorThemeMap[preferredColorTheme]) {
+			document.body.classList.add(colorThemeMap[preferredColorTheme]);
+		}
+
+		const retroSoundEnabled = localStorage.getItem('retroSoundEnabled') === 'true';
+		let audioContext = null;
+		let lastBeepAt = 0;
+
+		const ensureAudioContext = () => {
+			if (!audioContext) {
+				const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+				if (!AudioContextClass) {
+					return null;
+				}
+				audioContext = new AudioContextClass();
+			}
+			if (audioContext.state === 'suspended') {
+				audioContext.resume();
+			}
+			return audioContext;
+		};
+
+		const playRetroBeep = () => {
+			if (!retroSoundEnabled || !document.body.classList.contains('card-style-poster')) {
+				return;
+			}
+			const now = performance.now();
+			if (now - lastBeepAt < 85) {
+				return;
+			}
+			lastBeepAt = now;
+
+			const context = ensureAudioContext();
+			if (!context || context.state !== 'running') {
+				return;
+			}
+
+			const oscillator = context.createOscillator();
+			const gainNode = context.createGain();
+			oscillator.type = 'square';
+			oscillator.frequency.setValueAtTime(880, context.currentTime);
+			oscillator.frequency.setValueAtTime(620, context.currentTime + 0.035);
+			gainNode.gain.setValueAtTime(0.0001, context.currentTime);
+			gainNode.gain.exponentialRampToValueAtTime(0.035, context.currentTime + 0.01);
+			gainNode.gain.exponentialRampToValueAtTime(0.0001, context.currentTime + 0.08);
+			oscillator.connect(gainNode);
+			gainNode.connect(context.destination);
+			oscillator.start();
+			oscillator.stop(context.currentTime + 0.09);
+		};
+
+		document.addEventListener('pointerover', (event) => {
+			const currentTarget = event.target.closest('a,button,input,select,textarea,.filter-chip,.hero-button');
+			if (!currentTarget) {
+				return;
+			}
+			const previousTarget = event.relatedTarget && event.relatedTarget.closest
+				? event.relatedTarget.closest('a,button,input,select,textarea,.filter-chip,.hero-button')
+				: null;
+			if (currentTarget === previousTarget) {
+				return;
+			}
+			playRetroBeep();
+		});
+
+		document.addEventListener('focusin', (event) => {
+			if (event.target.closest('a,button,input,select,textarea,.filter-chip,.hero-button')) {
+				playRetroBeep();
+			}
+		});
+
 		document.getElementById('year').textContent = new Date().getFullYear();
 		// Burger menu toggle
 		const burgerBtn = document.getElementById('burgerMenuBtn');
 		const burgerMenu = document.getElementById('burgerMenu');
+
+		const closeMenu = () => {
+			burgerMenu.classList.remove('open');
+			burgerBtn.classList.remove('active');
+			burgerBtn.setAttribute('aria-expanded', 'false');
+		};
+
+		burgerBtn.setAttribute('aria-expanded', 'false');
 		burgerBtn.addEventListener('click', () => {
 			burgerMenu.classList.toggle('open');
 			burgerBtn.classList.toggle('active');
+			burgerBtn.setAttribute('aria-expanded', burgerMenu.classList.contains('open') ? 'true' : 'false');
 		});
+
+		document.addEventListener('click', (event) => {
+			if (!burgerMenu.contains(event.target) && !burgerBtn.contains(event.target)) {
+				closeMenu();
+			}
+		});
+
+		document.addEventListener('keydown', (event) => {
+			if (event.key === 'Escape') {
+				closeMenu();
+			}
+		});
+
 		// Highlight current page in burger menu
 		const path = window.location.pathname.split('/').pop();
 		if (path === '' || path === 'index.html') {
@@ -55,6 +186,29 @@
 		} else if (path === 'contact.html') {
 			document.getElementById('nav-contact').classList.add('active-page');
 		}
+
+		const copyEmailBtn = document.getElementById('copyEmailBtn');
+		copyEmailBtn.addEventListener('click', async () => {
+			const targetEmail = 'mmiletic853@gmail.com';
+			if (navigator.clipboard && navigator.clipboard.writeText) {
+				await navigator.clipboard.writeText(targetEmail);
+				copyEmailBtn.textContent = 'Email Copied';
+				setTimeout(() => {
+					copyEmailBtn.textContent = 'Copy Email';
+				}, 1400);
+			}
+		});
+
+		const contactForm = document.getElementById('contactForm');
+		contactForm.addEventListener('submit', (event) => {
+			event.preventDefault();
+			const name = document.getElementById('contactName').value.trim();
+			const email = document.getElementById('contactEmail').value.trim();
+			const subject = document.getElementById('contactSubject').value.trim();
+			const message = document.getElementById('contactMessage').value.trim();
+			const body = `Name: ${name}\nEmail: ${email}\n\n${message}`;
+			window.location.href = `mailto:mmiletic853@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+		});
 	</script>
 </body>
 </html>

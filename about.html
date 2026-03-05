@@ -28,20 +28,162 @@
   <main>
     <section>
       <h2>Who I Am</h2>
-      <p><!-- Add your personal information here --></p>
+      <p>I am Mihajlo Miletic, a creative builder focused on visual design, storytelling, and practical digital experiences.</p>
+      <p>I like turning rough concepts into polished work through quick iteration, clear structure, and strong attention to detail.</p>
+    </section>
+
+    <section>
+      <h2>Core Strengths</h2>
+      <div class="pill-list" aria-label="Core strengths">
+        <span class="pill">Visual Design</span>
+        <span class="pill">Creative Direction</span>
+        <span class="pill">Front-End Development</span>
+        <span class="pill">Brand Exploration</span>
+        <span class="pill">Rapid Iteration</span>
+      </div>
+    </section>
+
+    <section>
+      <h2>How I Work</h2>
+      <div class="intro-highlight-grid">
+        <article class="highlight-card">
+          <h3>Discover</h3>
+          <p>I gather references and define a clear direction before committing to execution.</p>
+        </article>
+        <article class="highlight-card">
+          <h3>Build</h3>
+          <p>I prototype quickly, test ideas visually, and refine toward a clean final result.</p>
+        </article>
+        <article class="highlight-card">
+          <h3>Deliver</h3>
+          <p>I focus on clarity, consistency, and showcasing work in a way people can understand fast.</p>
+        </article>
+      </div>
+      <div class="quick-links">
+        <a href="projects.html" class="hero-button">View projects</a>
+        <a href="contact.html" class="hero-button">Let’s collaborate</a>
+      </div>
     </section>
   </main>
   <footer>
     <p>© <span id="year"></span> Mihajlo Miletic</p>
   </footer>
   <script>
+    const styleClassMap = {
+      default: '',
+      poster: 'card-style-poster',
+      crt: 'card-style-crt'
+    };
+    const colorThemeMap = {
+      lilac: 'theme-lilac',
+      sunset: 'theme-sunset',
+      mint: 'theme-mint',
+      night: 'theme-night'
+    };
+    const preferredCardStyle = localStorage.getItem('preferredCardStyle');
+    if (preferredCardStyle && styleClassMap[preferredCardStyle]) {
+      document.body.classList.add(styleClassMap[preferredCardStyle]);
+    }
+    const preferredColorTheme = localStorage.getItem('preferredColorTheme');
+    if (preferredColorTheme && colorThemeMap[preferredColorTheme]) {
+      document.body.classList.add(colorThemeMap[preferredColorTheme]);
+    }
+
+    const retroSoundEnabled = localStorage.getItem('retroSoundEnabled') === 'true';
+    let audioContext = null;
+    let lastBeepAt = 0;
+
+    const ensureAudioContext = () => {
+      if (!audioContext) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContextClass) {
+          return null;
+        }
+        audioContext = new AudioContextClass();
+      }
+      if (audioContext.state === 'suspended') {
+        audioContext.resume();
+      }
+      return audioContext;
+    };
+
+    const playRetroBeep = () => {
+      if (!retroSoundEnabled || !document.body.classList.contains('card-style-poster')) {
+        return;
+      }
+      const now = performance.now();
+      if (now - lastBeepAt < 85) {
+        return;
+      }
+      lastBeepAt = now;
+
+      const context = ensureAudioContext();
+      if (!context || context.state !== 'running') {
+        return;
+      }
+
+      const oscillator = context.createOscillator();
+      const gainNode = context.createGain();
+      oscillator.type = 'square';
+      oscillator.frequency.setValueAtTime(880, context.currentTime);
+      oscillator.frequency.setValueAtTime(620, context.currentTime + 0.035);
+      gainNode.gain.setValueAtTime(0.0001, context.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.035, context.currentTime + 0.01);
+      gainNode.gain.exponentialRampToValueAtTime(0.0001, context.currentTime + 0.08);
+      oscillator.connect(gainNode);
+      gainNode.connect(context.destination);
+      oscillator.start();
+      oscillator.stop(context.currentTime + 0.09);
+    };
+
+    document.addEventListener('pointerover', (event) => {
+      const currentTarget = event.target.closest('a,button,input,select,textarea,.filter-chip,.hero-button');
+      if (!currentTarget) {
+        return;
+      }
+      const previousTarget = event.relatedTarget && event.relatedTarget.closest
+        ? event.relatedTarget.closest('a,button,input,select,textarea,.filter-chip,.hero-button')
+        : null;
+      if (currentTarget === previousTarget) {
+        return;
+      }
+      playRetroBeep();
+    });
+
+    document.addEventListener('focusin', (event) => {
+      if (event.target.closest('a,button,input,select,textarea,.filter-chip,.hero-button')) {
+        playRetroBeep();
+      }
+    });
+
     document.getElementById('year').textContent = new Date().getFullYear();
     // Burger menu toggle
     const burgerBtn = document.getElementById('burgerMenuBtn');
     const burgerMenu = document.getElementById('burgerMenu');
+
+    const closeMenu = () => {
+      burgerMenu.classList.remove('open');
+      burgerBtn.classList.remove('active');
+      burgerBtn.setAttribute('aria-expanded', 'false');
+    };
+
+    burgerBtn.setAttribute('aria-expanded', 'false');
     burgerBtn.addEventListener('click', () => {
       burgerMenu.classList.toggle('open');
       burgerBtn.classList.toggle('active');
+      burgerBtn.setAttribute('aria-expanded', burgerMenu.classList.contains('open') ? 'true' : 'false');
+    });
+
+    document.addEventListener('click', (event) => {
+      if (!burgerMenu.contains(event.target) && !burgerBtn.contains(event.target)) {
+        closeMenu();
+      }
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        closeMenu();
+      }
     });
     // Highlight current page in burger menu
     const path = window.location.pathname.split('/').pop();
