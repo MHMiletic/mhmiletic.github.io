@@ -1,45 +1,80 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>JJK Gojo Alt Hoodie</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="../../style.css">
-  <style>
-    .hoodie-viewer { display: flex; flex-direction: column; align-items: center; padding: 2rem; }
-    .main-img-container img { width: 650px; max-width: 100%; height: auto; border-radius: 12px; }
-    .thumbs { display: flex; gap: 1rem; margin-top: 1rem; }
-    .thumb { width: 200px; cursor: pointer; border-radius: 8px; }
-  </style>
+  <meta charset="UTF-8" />
+  <title>JJK Gojo Alt Hoodie Case Study</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Case study for JJK Gojo Alt hoodie concept and variant exploration." />
+  <link rel="preload" href="../../style.css" as="style" />
+  <link rel="stylesheet" href="../../style.css" />
+  <link rel="stylesheet" href="case-study-template.css" />
 </head>
 <body>
-  <header><h1>JJK Gojo Alt Hoodie</h1></header>
-  <main class="hoodie-viewer">
-    <div class="main-img-container"><img id="mainImg" src="jjk_gojo_alt1.png" alt="JJK Gojo Alt variant"></div>
-    <div class="thumbs"></div>
+  <nav class="site-nav" id="siteNav" aria-label="Primary">
+    <div class="site-nav-inner">
+      <a href="../../index.html" class="site-logo">miletic</a>
+      <div class="site-nav-links">
+        <a href="../../index.html" id="nav-home">Home</a>
+        <a href="../../about.html" id="nav-about">About</a>
+        <a href="../../projects.html" id="nav-projects" class="active-page">Projects</a>
+        <a href="../../contact.html" id="nav-contact">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="case-hero">
+    <article class="case-panel case-window case-hero-window" data-window-label="Overview">
+      <h1>JJK Gojo Alt Hoodie</h1>
+      <p>A streetwear-forward direction with dynamic focal placement and controlled contrast tuned for distance readability.</p>
+    </article>
+  </header>
+
+  <main class="case-layout">
+    <article class="case-panel case-window" data-window-label="Gallery" aria-label="Image gallery">
+      <img id="mainImg" class="main-media" src="jjk_gojo_alt1.png" alt="JJK Gojo Alt hoodie variant 1" />
+      <div class="viewer-controls">
+        <button type="button" id="prevBtn">Previous</button>
+        <button type="button" id="nextBtn">Next</button>
+      </div>
+      <div class="thumbs" id="thumbs"></div>
+    </article>
+
+    <aside class="case-meta-list">
+      <article class="case-panel case-window" data-window-label="Case Study">
+        <h3>Case Study</h3>
+        <p>This concept explores character-forward apparel with a focus on print readability, visual energy, and wearable composition.</p>
+      </article>
+      <article class="case-panel case-window" data-window-label="Highlights">
+        <h3>Highlights</h3>
+        <ul>
+          <li>Variant-driven exploration across three final candidates.</li>
+          <li>Balance between icon prominence and garment negative space.</li>
+          <li>Ready-to-present mockups for portfolio and social previews.</li>
+        </ul>
+      </article>
+      <article class="case-panel case-window" data-window-label="Tools + Process">
+        <h3>Tools + Process</h3>
+        <p>Illustrator, Photoshop, and iterative print testing. Direction refined through silhouette checks, contrast passes, and fast review loops.</p>
+      </article>
+    </aside>
   </main>
-  <footer><a href="../../projects.html">Back to Projects</a></footer>
-  <script>
-    const images = ['jjk_gojo_alt1.png','jjk_gojo_alt2.png','jjk_gojo_alt3.png'];
-    let current = 0;
-    const mainImg = document.getElementById('mainImg');
-    const thumbsContainer = document.querySelector('.thumbs');
-    function updateThumbnails() {
-      thumbsContainer.innerHTML = '';
-      images.forEach((src,index) => {
-        if (index === current) return;
-        const img = document.createElement('img');
-        img.src = src;
-        img.className = 'thumb';
-        img.addEventListener('click', () => {
-          current = index;
-          mainImg.src = images[current];
-          updateThumbnails();
-        });
-        thumbsContainer.appendChild(img);
-      });
+
+  <footer class="case-footer">
+    <a class="hero-button" href="../../projects.html#hoodies">Back to Projects</a>
+    <p>&copy; <span id="year"></span> Mihajlo Miletic</p>
+  </footer>
+
+  <script id="caseData" type="application/json">
+    {
+      "altBase": "JJK Gojo Alt Hoodie",
+      "images": ["jjk_gojo_alt1.png", "jjk_gojo_alt2.png", "jjk_gojo_alt3.png"]
     }
-    updateThumbnails();
   </script>
+  <script src="case-study-template.js"></script>
+  <script src="../../crt-reticle.js"></script>
 </body>
 </html>
+
+
+
+

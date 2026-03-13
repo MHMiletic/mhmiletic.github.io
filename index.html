@@ -5,27 +5,63 @@
   <title>Miletic – Portfolio</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="Portfolio of Mihajlo Miletic – design, creative development, and visual experiments." />
+  <style>
+    /* Critical nav paint to prevent first-frame flashes before style.css is ready. */
+    body { margin: 0; background: #1a2233; color: #e6edf3; }
+    .site-nav { position: sticky; top: 0; z-index: 1100; width: 100%; border-bottom: 1px solid rgba(255,255,255,0.08); background: linear-gradient(90deg, rgba(11,16,27,0.98), rgba(8,13,24,0.98)); }
+    .site-nav-inner { width: min(100% - 40px, 1800px); margin: 0 auto; min-height: 86px; display: flex; align-items: center; justify-content: flex-start; position: relative; }
+    .site-logo { color: #f5f7fb; text-decoration: none; font-family: "Times New Roman", Georgia, serif; font-size: clamp(2.25rem, 3vw, 3.1rem); line-height: 1; }
+    .site-nav-links { position: absolute; left: 50%; transform: translateX(-50%); display: flex; gap: 2rem; }
+    .site-nav-links a { color: rgba(240,243,248,0.66); text-decoration: none; font-size: 1.01rem; }
+  </style>
+  <link rel="preload" href="style.css" as="style" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <div class="burger-menu-container">
-      <button class="burger-menu-btn" id="burgerMenuBtn" aria-label="Open menu">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-      <nav class="burger-menu" id="burgerMenu">
-        <ul>
-          <li><a href="index.html" id="nav-home">Home</a></li>
-          <li><a href="about.html" id="nav-about">Who Am I Actually?</a></li>
-          <li><a href="projects.html" id="nav-projects">Projects</a></li>
-           <li><a href="contact.html" id="nav-contact">Contact</a></li>
-        </ul>
-      </nav>
+  <nav class="site-nav" id="siteNav" aria-label="Primary">
+    <div class="site-nav-inner">
+      <a href="index.html" class="site-logo">miletic</a>
+      <div class="site-nav-links">
+        <a href="index.html" id="nav-home">Home</a>
+        <a href="about.html" id="nav-about">About</a>
+        <a href="projects.html" id="nav-projects">Projects</a>
+        <a href="contact.html" id="nav-contact">Contact</a>
+      </div>
+      <div class="nav-tools" id="navTools">
+        <div class="nav-tool">
+          <button type="button" class="nav-tool-button" data-dropdown-target="themeQuickMenu" aria-expanded="false" aria-haspopup="true" aria-label="Open gradient menu" title="Gradient menu">
+            <span class="icon-gradient-square" aria-hidden="true"></span>
+          </button>
+          <div class="nav-dropdown" id="themeQuickMenu" role="menu" aria-label="Gradient options">
+            <button type="button" class="nav-dropdown-item" role="menuitem" data-theme="default">Default Theme</button>
+            <button type="button" class="nav-dropdown-item" role="menuitem" data-theme="lilac">Lilac Theme</button>
+            <button type="button" class="nav-dropdown-item" role="menuitem" data-theme="sunset">Sunset Theme</button>
+            <button type="button" class="nav-dropdown-item" role="menuitem" data-theme="mint">Mint Theme</button>
+            <button type="button" class="nav-dropdown-item" role="menuitem" data-theme="night">Night Theme</button>
+          </div>
+        </div>
+        <div class="nav-tool">
+          <button type="button" class="nav-tool-button" data-dropdown-target="displayQuickMenu" aria-expanded="false" aria-haspopup="true" aria-label="Open screen menu" title="Screen menu">
+            <svg class="icon-screen" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <rect x="3.5" y="4.5" width="17" height="11.5" rx="1.8" ry="1.8" fill="none" stroke="currentColor" stroke-width="1.8"/>
+              <path d="M8.2 19.6h7.6M10.1 16.8h3.8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <div class="nav-dropdown" id="displayQuickMenu" role="menu" aria-label="Display options">
+            <button type="button" class="nav-dropdown-item" role="menuitem" data-style="default">Default Cards</button>
+            <button type="button" class="nav-dropdown-item" role="menuitem" data-style="poster">Poster Cards</button>
+            <button type="button" class="nav-dropdown-item" role="menuitem" data-style="crt">CRT Cards</button>
+          </div>
+        </div>
+      </div>
     </div>
-  <header>
-    <div class="hero-title-row">
-      <h1 class="big-name">mihajlo<br>miletic</h1>
+  </nav>
+  <header id="heroStage" class="hero-stage">
+    <div class="hero-title-row" id="heroPrimary">
+      <h1 class="big-name" id="bigNameTrigger" role="button" tabindex="0" aria-label="Go to About Me section" title="Go to About Me">
+        <span class="big-name-base">mihajlo<br>miletic</span>
+        <span class="big-name-overlay" aria-hidden="true">mihajlo<br>miletic</span>
+      </h1>
       <div class="roles-container">
         <div class="role-list">
           <span>developer</span>
@@ -39,16 +75,28 @@
         </div>
       </div>
     </div>
-    <a href="#projects" class="hero-button">View my work</a>
+    <a href="#projects" id="heroCta" class="hero-button">View my work</a>
   </header>
 
   <main>
     <section id="about">
-      <h2>About Me</h2>
-      <p>Hi! I'm Mihajlo, or Mika for short, and this is a portfolio showcasing my work in design, tinkering, and who I am.</p>
-      <div class="quick-links">
-        <a href="about.html" class="hero-button">Read full profile</a>
-        <a href="contact.html" class="hero-button">Start a project</a>
+      <div class="about-top-row">
+        <div class="about-intro-copy">
+          <h2>About Me</h2>
+          <p>Hi! I'm Mihajlo, or Mika for short, and this is a portfolio showcasing my work in design, tinkering, and who I am.</p>
+          <div class="quick-links">
+            <a href="about.html" class="hero-button">Read full profile</a>
+            <a href="contact.html" class="hero-button">Start a project</a>
+          </div>
+        </div>
+        <div class="high-five-widget" aria-label="High five widget">
+          <button type="button" id="highFiveButton" class="high-five-button" aria-label="Give a high five" title="Give a high five">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M7.95 3.31a1.75 1.75 0 0 1 1.74 1.75v4.07h.62V3.94a1.75 1.75 0 1 1 3.5 0v5.19h.63V5.06a1.75 1.75 0 0 1 3.5 0v8.06l1.29 1.93A3.5 3.5 0 0 1 17.82 20H9.05a3.5 3.5 0 0 1-2.97-1.65L3.7 14.6a1.75 1.75 0 0 1 2.86-1.99l1.13 1.62V5.06A1.75 1.75 0 0 1 7.95 3.31Z" fill="currentColor"/>
+            </svg>
+          </button>
+          <p class="high-five-count-label">High fives given: <span id="highFiveCount">0</span></p>
+        </div>
       </div>
       <div class="style-switcher" id="styleSwitcher" aria-label="Card style options">
         <span>Card style:</span>
@@ -85,8 +133,15 @@
       </div>
     </section>
 
-    <section id="projects">
+    <section id="projects" class="focus-stage">
       <h2>My Latest Projects :)</h2>
+      <div class="discipline-switcher" id="disciplineSwitcher" role="group" aria-label="Filter featured projects by discipline">
+        <button type="button" class="filter-chip active" data-discipline="all">All</button>
+        <button type="button" class="filter-chip" data-discipline="product">Product / UI</button>
+        <button type="button" class="filter-chip" data-discipline="graphic">Graphic / Apparel</button>
+        <button type="button" class="filter-chip" data-discipline="experiments">Experiments</button>
+      </div>
+      <p id="disciplineSummary" class="discipline-summary">Showing all disciplines.</p>
       <div class="projects-grid" id="index-projects-grid">
         <!-- Articles generated from PROJECTS data -->
       </div>
@@ -111,45 +166,134 @@
   <script src="projects-data.js"></script>
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
-    // Burger menu toggle
-    const burgerBtn = document.getElementById('burgerMenuBtn');
-    const burgerMenu = document.getElementById('burgerMenu');
+    const siteNav = document.getElementById('siteNav');
+    const updateNavScrollState = () => {
+      siteNav.classList.toggle('scrolled', window.scrollY > 8);
+    };
+    updateNavScrollState();
+    window.addEventListener('scroll', updateNavScrollState, { passive: true });
 
-    const closeMenu = () => {
-      burgerMenu.classList.remove('open');
-      burgerBtn.classList.remove('active');
-      burgerBtn.setAttribute('aria-expanded', 'false');
+    const heroPrimary = document.getElementById('heroPrimary');
+    const heroCta = document.getElementById('heroCta');
+    const bigNameTrigger = document.getElementById('bigNameTrigger');
+    const aboutSection = document.getElementById('about');
+    const projectsStage = document.getElementById('projects');
+    const reduceMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+
+    const setFlowProgress = () => {
+      if (reduceMotionQuery.matches || !projectsStage) {
+        return;
+      }
+      const stageRect = projectsStage.getBoundingClientRect();
+      const progress = clamp((window.innerHeight - stageRect.top) / (window.innerHeight * 0.95), 0, 1);
+      const eased = 1 - Math.pow(1 - progress, 2);
+
+      if (heroPrimary) {
+        heroPrimary.style.opacity = String(1 - (eased * 0.82));
+        heroPrimary.style.filter = `blur(${(eased * 7).toFixed(2)}px)`;
+        heroPrimary.style.transform = `translateY(${(-52 * eased).toFixed(2)}px) scale(${(1 - eased * 0.08).toFixed(3)})`;
+      }
+
+      if (heroCta) {
+        heroCta.style.opacity = String(1 - (eased * 0.92));
+        heroCta.style.transform = `translateY(${(-26 * eased).toFixed(2)}px)`;
+      }
+
+      projectsStage.style.opacity = String(0.28 + (eased * 0.72));
+      projectsStage.style.transform = `translateY(${((1 - eased) * 72).toFixed(2)}px) scale(${(0.94 + eased * 0.06).toFixed(3)})`;
+      document.body.classList.toggle('flow-active', progress > 0.05);
     };
 
-    burgerBtn.setAttribute('aria-expanded', 'false');
-    burgerBtn.addEventListener('click', () => {
-      burgerMenu.classList.toggle('open');
-      burgerBtn.classList.toggle('active');
-      burgerBtn.setAttribute('aria-expanded', burgerMenu.classList.contains('open') ? 'true' : 'false');
-    });
-
-    document.addEventListener('click', (event) => {
-      if (!burgerMenu.contains(event.target) && !burgerBtn.contains(event.target)) {
-        closeMenu();
+    let flowTicking = false;
+    const requestFlowUpdate = () => {
+      if (flowTicking) {
+        return;
       }
-    });
+      flowTicking = true;
+      requestAnimationFrame(() => {
+        setFlowProgress();
+        flowTicking = false;
+      });
+    };
 
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape') {
-        closeMenu();
+    window.addEventListener('scroll', requestFlowUpdate, { passive: true });
+    window.addEventListener('resize', requestFlowUpdate);
+    if (typeof reduceMotionQuery.addEventListener === 'function') {
+      reduceMotionQuery.addEventListener('change', requestFlowUpdate);
+    }
+
+    let aboutScrollFrame = null;
+    const animateLinearScrollTo = (targetY) => {
+      const startY = window.scrollY;
+      const distance = targetY - startY;
+      if (Math.abs(distance) < 1) {
+        return;
       }
-    });
+
+      const pixelsPerMs = 1.05;
+      const duration = Math.max(420, Math.abs(distance) / pixelsPerMs);
+      const startTime = performance.now();
+      const root = document.documentElement;
+      const body = document.body;
+      const prevRootBehavior = root.style.scrollBehavior;
+      const prevBodyBehavior = body.style.scrollBehavior;
+      root.style.scrollBehavior = 'auto';
+      body.style.scrollBehavior = 'auto';
+
+      const restoreScrollBehavior = () => {
+        root.style.scrollBehavior = prevRootBehavior;
+        body.style.scrollBehavior = prevBodyBehavior;
+      };
+
+      const step = (now) => {
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        window.scrollTo(0, startY + (distance * progress));
+        if (progress < 1) {
+          aboutScrollFrame = requestAnimationFrame(step);
+        } else {
+          restoreScrollBehavior();
+        }
+      };
+
+      if (aboutScrollFrame) {
+        cancelAnimationFrame(aboutScrollFrame);
+        restoreScrollBehavior();
+      }
+      aboutScrollFrame = requestAnimationFrame(step);
+    };
+
+    const scrollToAbout = () => {
+      if (!aboutSection) {
+        return;
+      }
+      const targetY = window.scrollY + aboutSection.getBoundingClientRect().top;
+      animateLinearScrollTo(targetY);
+    };
+
+    if (bigNameTrigger) {
+      bigNameTrigger.addEventListener('click', scrollToAbout);
+      bigNameTrigger.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          scrollToAbout();
+        }
+      });
+    }
 
     // Highlight current page in burger menu
-    const path = window.location.pathname.split('/').pop();
-    if (path === '' || path === 'index.html') {
-      document.getElementById('nav-home').classList.add('active-page');
-    } else if (path === 'projects.html') {
-      document.getElementById('nav-projects').classList.add('active-page');
-    } else if (path === 'about.html') {
-      document.getElementById('nav-about').classList.add('active-page');
-    } else if (path === 'contact.html') {
-      document.getElementById('nav-contact').classList.add('active-page');
+    const path = window.location.pathname.split('/').pop() || 'index.html';
+    const navIdByPath = {
+      'index.html': 'nav-home',
+      'projects.html': 'nav-projects',
+      'about.html': 'nav-about',
+      'contact.html': 'nav-contact'
+    };
+    const activeNavId = navIdByPath[path];
+    if (activeNavId) {
+      document.getElementById(activeNavId).classList.add('active-page');
     }
 
     const styleClassMap = {
@@ -167,6 +311,61 @@
 
     const styleButtons = document.querySelectorAll('#styleSwitcher button[data-style]');
     const colorThemeButtons = document.querySelectorAll('#colorSwitcher button[data-theme]');
+    const navToolButtons = document.querySelectorAll('.nav-tool-button[data-dropdown-target]');
+    const navDropdowns = document.querySelectorAll('.nav-dropdown');
+    const themeDropdownItems = document.querySelectorAll('.nav-dropdown-item[data-theme]');
+    const styleDropdownItems = document.querySelectorAll('.nav-dropdown-item[data-style]');
+
+    const syncNavDropdownSelection = () => {
+      const activeTheme = localStorage.getItem('preferredColorTheme') || 'default';
+      const activeStyle = localStorage.getItem('preferredCardStyle') || 'default';
+
+      themeDropdownItems.forEach(item => {
+        const isActive = item.dataset.theme === activeTheme;
+        item.classList.toggle('selected', isActive);
+        item.setAttribute('aria-current', isActive ? 'true' : 'false');
+      });
+
+      styleDropdownItems.forEach(item => {
+        const isActive = item.dataset.style === activeStyle;
+        item.classList.toggle('selected', isActive);
+        item.setAttribute('aria-current', isActive ? 'true' : 'false');
+      });
+    };
+
+    const closeAllNavDropdowns = () => {
+      navDropdowns.forEach(menu => menu.classList.remove('open'));
+      navToolButtons.forEach(button => button.setAttribute('aria-expanded', 'false'));
+    };
+
+    navToolButtons.forEach(button => {
+      button.addEventListener('click', (event) => {
+        event.stopPropagation();
+        const targetId = button.getAttribute('data-dropdown-target');
+        const targetMenu = document.getElementById(targetId);
+        if (!targetMenu) {
+          return;
+        }
+        const willOpen = !targetMenu.classList.contains('open');
+        closeAllNavDropdowns();
+        if (willOpen) {
+          targetMenu.classList.add('open');
+          button.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+
+    document.addEventListener('click', (event) => {
+      if (!event.target.closest('.nav-tools')) {
+        closeAllNavDropdowns();
+      }
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        closeAllNavDropdowns();
+      }
+    });
 
     const applyStyle = (style) => {
       Object.values(styleClassMap).forEach(styleClass => {
@@ -179,6 +378,7 @@
       }
       styleButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.style === style));
       localStorage.setItem('preferredCardStyle', style);
+      syncNavDropdownSelection();
     };
 
     const applyTheme = (theme) => {
@@ -192,17 +392,32 @@
       }
       colorThemeButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.theme === theme));
       localStorage.setItem('preferredColorTheme', theme);
+      syncNavDropdownSelection();
     };
 
     applyStyle(localStorage.getItem('preferredCardStyle') || 'default');
     applyTheme(localStorage.getItem('preferredColorTheme') || 'default');
 
-    styleButtons.forEach(button => {
-      button.addEventListener('click', () => applyStyle(button.dataset.style));
-    });
-    colorThemeButtons.forEach(button => {
-      button.addEventListener('click', () => applyTheme(button.dataset.theme));
-    });
+    const bindDatasetAction = (buttons, datasetKey, action, options = {}) => {
+      const { closeDropdownAfterClick = false } = options;
+      buttons.forEach(button => {
+        button.addEventListener('click', (event) => {
+          if (closeDropdownAfterClick) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          action(button.dataset[datasetKey]);
+          if (closeDropdownAfterClick) {
+            closeAllNavDropdowns();
+          }
+        });
+      });
+    };
+
+    bindDatasetAction(styleButtons, 'style', applyStyle);
+    bindDatasetAction(colorThemeButtons, 'theme', applyTheme);
+    bindDatasetAction(themeDropdownItems, 'theme', applyTheme, { closeDropdownAfterClick: true });
+    bindDatasetAction(styleDropdownItems, 'style', applyStyle, { closeDropdownAfterClick: true });
 
     const retroSoundToggle = document.getElementById('retroSoundToggle');
     let retroSoundEnabled = localStorage.getItem('retroSoundEnabled') === 'true';
@@ -288,33 +503,300 @@
       }
     });
 
-    // build project list on index page, sorted by date descending
-    const container = document.getElementById('index-projects-grid');
-    PROJECTS
-      .filter(p => p.section === 'mockups')
-      .sort((a,b)=> b.date.localeCompare(a.date))
-      .forEach(p => {
-        const art = document.createElement('article');
-        art.setAttribute('data-date', p.date);
-        art.innerHTML = `<h3>${p.title}</h3>
-          <img src="${p.img}" alt="${p.title} project image" class="project-img ${p.imgClass}">
-          <p>${p.desc}</p>`;
-        container.appendChild(art);
-      });
+    const HIGH_FIVE_COUNT_KEY = 'siteHighFiveCountV1';
+    const highFiveButton = document.getElementById('highFiveButton');
+    const highFiveCountEl = document.getElementById('highFiveCount');
+
+    const readHighFiveCount = () => {
+      const stored = Number.parseInt(localStorage.getItem(HIGH_FIVE_COUNT_KEY) || '0', 10);
+      return Number.isFinite(stored) && stored >= 0 ? stored : 0;
+    };
+
+    let highFiveCount = readHighFiveCount();
+    highFiveCountEl.textContent = String(highFiveCount);
+
+    highFiveButton.addEventListener('click', () => {
+      highFiveCount += 1;
+      highFiveCountEl.textContent = String(highFiveCount);
+      localStorage.setItem(HIGH_FIVE_COUNT_KEY, String(highFiveCount));
+    });
+
+    const DISCIPLINE_MAP = {
+      mockups: 'product',
+      hoodies: 'graphic',
+      personalprojects: 'experiments'
+    };
+    const DISCIPLINE_LABELS = {
+      all: 'all disciplines',
+      product: 'Product / UI',
+      graphic: 'Graphic / Apparel',
+      experiments: 'Experiments'
+    };
+    const SECTION_TAGS = {
+      mockups: ['0 to 1', 'UI', 'Concept'],
+      hoodies: ['Graphic', 'Apparel', 'Print'],
+      personalprojects: ['Visual Lab', 'Experiment', 'Story']
+    };
+    const SECTION_METRICS = {
+      mockups: [
+        { value: '8+', label: 'concept rounds' },
+        { value: '3', label: 'design tools' }
+      ],
+      hoodies: [
+        { value: '20+', label: 'print variants' },
+        { value: '6', label: 'anime series' }
+      ],
+      personalprojects: [
+        { value: '9+', label: 'worlds explored' },
+        { value: '100%', label: 'self-directed' }
+      ]
+    };
+    const SPOTLIGHT_NARRATIVE = {
+      challenge: 'Take an idea from rough inspiration to a polished visual with clear intent.',
+      approach: 'Blend composition, typography, and iterative feedback to refine each direction quickly.',
+      impact: 'Create pieces that are memorable, style-flexible, and ready for portfolio storytelling.'
+    };
 
     const spotlightContainer = document.getElementById('spotlight-card');
-    const projectsWithRealDates = PROJECTS.filter(p => p.date !== 'YYYY-MM-DD');
-    const spotlightPool = projectsWithRealDates.length ? projectsWithRealDates : PROJECTS;
-    const spotlightProject = spotlightPool[Math.floor(Math.random() * spotlightPool.length)];
-    const categoryLabel = spotlightProject.section === 'personalprojects'
-      ? 'Personal Projects'
-      : spotlightProject.section.charAt(0).toUpperCase() + spotlightProject.section.slice(1);
+    const SPOTLIGHT_HISTORY_KEY = 'dailySpotlightHistoryV1';
+    const SPOTLIGHT_LOOKBACK_DAYS = 10;
+    const SPOTLIGHT_HISTORY_RETENTION_DAYS = 60;
+    const HOODIE_DETAIL_PAGES = new Set([
+      'kirby',
+      'kira_alt',
+      'jjk_gojo_alt',
+      'csm',
+      'berserk',
+      'berserk_overlap_alt'
+    ]);
 
-    spotlightContainer.innerHTML = `<h3>${spotlightProject.title}</h3>
-      <img src="${spotlightProject.img}" alt="${spotlightProject.title} spotlight image" class="project-img ${spotlightProject.imgClass}">
-      <p>${spotlightProject.desc}</p>
-      <p class="spotlight-meta">Category: ${categoryLabel}</p>
-      <a href="projects.html#${spotlightProject.section}" class="hero-button">Explore this category</a>`;
+    const getCategoryLabel = (section) => {
+      if (section === 'personalprojects') {
+        return 'Personal Projects';
+      }
+      return section.charAt(0).toUpperCase() + section.slice(1);
+    };
+
+    const getProjectDetailLink = (project) => {
+      if (project.section === 'hoodies') {
+        const imageFile = project.img.split('/').pop() || '';
+        const baseName = imageFile.replace(/\d+\.png$/i, '');
+        if (HOODIE_DETAIL_PAGES.has(baseName)) {
+          return `projects/hoodies/${baseName}.html`;
+        }
+      }
+      return `projects.html#${project.section}`;
+    };
+
+    const enrichProject = (project) => {
+      const discipline = DISCIPLINE_MAP[project.section] || 'experiments';
+      const tags = SECTION_TAGS[project.section] || ['Design'];
+      const metrics = SECTION_METRICS[project.section] || [];
+      const caseStudyUrl = getProjectDetailLink(project);
+      const liveUrl = project.img;
+      return {
+        ...project,
+        discipline,
+        tags,
+        metrics,
+        caseStudyUrl,
+        liveUrl
+      };
+    };
+
+    const renderProjectCard = (project) => {
+      const art = document.createElement('article');
+      art.setAttribute('data-date', project.date);
+      art.innerHTML = `<h3>${project.title}</h3>
+        <p>${project.desc}</p>
+        <img src="${project.img}" alt="${project.title} project image" class="project-img ${project.imgClass}">
+        <div class="project-meta-row">
+          <div class="tag-list">${project.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}</div>
+          <div class="metric-list">${project.metrics.map(metric => `<span class="metric"><strong>${metric.value}</strong> ${metric.label}</span>`).join('')}</div>
+        </div>
+        <div class="project-actions">
+          <a href="${project.caseStudyUrl}" class="hero-button">View case study</a>
+          <a href="${project.liveUrl}" class="hero-button" target="_blank" rel="noopener">View live</a>
+        </div>`;
+      return art;
+    };
+
+    // build project list on index page with discipline filtering
+    const container = document.getElementById('index-projects-grid');
+    const disciplineSummary = document.getElementById('disciplineSummary');
+    const disciplineButtons = document.querySelectorAll('#disciplineSwitcher button[data-discipline]');
+    const featuredProjects = PROJECTS
+      .filter(project => !(project.section === 'hoodies' && !/1\.png$/i.test(project.img)))
+      .map(enrichProject)
+      .sort((a, b) => b.date.localeCompare(a.date));
+    let activeDiscipline = 'all';
+
+    let cardFocusObserver = null;
+    const setupCardFocusObserver = () => {
+      if (cardFocusObserver) {
+        cardFocusObserver.disconnect();
+      }
+
+      const cards = container.querySelectorAll('article');
+      if (reduceMotionQuery.matches) {
+        cards.forEach(card => card.classList.add('in-focus'));
+        return;
+      }
+
+      cardFocusObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-focus');
+          } else {
+            entry.target.classList.remove('in-focus');
+          }
+        });
+      }, {
+        threshold: 0.22,
+        rootMargin: '0px 0px -10% 0px'
+      });
+
+      cards.forEach((card, index) => {
+        card.style.transitionDelay = `${Math.min(index * 60, 280)}ms`;
+        card.classList.add('flow-card');
+        cardFocusObserver.observe(card);
+      });
+    };
+
+    const renderIndexProjects = () => {
+      const visibleProjects = featuredProjects
+        .filter(project => activeDiscipline === 'all' || project.discipline === activeDiscipline)
+        .slice(0, 6);
+
+      container.innerHTML = '';
+      visibleProjects.forEach(project => {
+        container.appendChild(renderProjectCard(project));
+      });
+      disciplineSummary.textContent = `Showing ${DISCIPLINE_LABELS[activeDiscipline]}.`;
+      setupCardFocusObserver();
+      requestFlowUpdate();
+    };
+
+    disciplineButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        activeDiscipline = button.dataset.discipline;
+        disciplineButtons.forEach(btn => btn.classList.toggle('active', btn === button));
+        renderIndexProjects();
+      });
+    });
+
+    renderIndexProjects();
+    requestFlowUpdate();
+
+    const toLocalDateKey = (date = new Date()) => {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    };
+
+    const parseDateKey = (key) => {
+      const [year, month, day] = key.split('-').map(Number);
+      if (!year || !month || !day) {
+        return null;
+      }
+      return new Date(year, month - 1, day);
+    };
+
+    const isWithinLastNDays = (dateKey, days, todayDate = new Date()) => {
+      const parsedDate = parseDateKey(dateKey);
+      if (!parsedDate) {
+        return false;
+      }
+      const msPerDay = 24 * 60 * 60 * 1000;
+      const dayDelta = Math.floor((todayDate - parsedDate) / msPerDay);
+      return dayDelta >= 0 && dayDelta <= days;
+    };
+
+    const getProjectId = (project) => `${project.section}::${project.title}::${project.img}`;
+
+    const readSpotlightHistory = () => {
+      try {
+        const raw = localStorage.getItem(SPOTLIGHT_HISTORY_KEY);
+        const parsed = raw ? JSON.parse(raw) : [];
+        if (!Array.isArray(parsed)) {
+          return [];
+        }
+        return parsed.filter(entry => entry && entry.date && entry.projectId);
+      } catch {
+        return [];
+      }
+    };
+
+    const writeSpotlightHistory = (history) => {
+      localStorage.setItem(SPOTLIGHT_HISTORY_KEY, JSON.stringify(history));
+    };
+
+    const getSpotlightCandidates = () => {
+      // Avoid spotlighting hoodie image variants 2/3; keep one representative card.
+      return PROJECTS.filter(project => !(project.section === 'hoodies' && !/1\.png$/i.test(project.img)));
+    };
+
+    const pickDailySpotlight = (candidates) => {
+      const today = new Date();
+      const todayKey = toLocalDateKey(today);
+      const history = readSpotlightHistory();
+      const projectById = new Map(candidates.map(project => [getProjectId(project), project]));
+
+      const existingToday = history.find(entry => entry.date === todayKey);
+      if (existingToday && projectById.has(existingToday.projectId)) {
+        return projectById.get(existingToday.projectId);
+      }
+
+      const recentProjectIds = new Set(
+        history
+          .filter(entry => entry.date !== todayKey && isWithinLastNDays(entry.date, SPOTLIGHT_LOOKBACK_DAYS, today))
+          .map(entry => entry.projectId)
+      );
+
+      let eligibleProjects = candidates.filter(project => !recentProjectIds.has(getProjectId(project)));
+      if (eligibleProjects.length === 0) {
+        eligibleProjects = candidates.slice();
+      }
+
+      const selectedProject = eligibleProjects[Math.floor(Math.random() * eligibleProjects.length)];
+      const selectedProjectId = getProjectId(selectedProject);
+      const updatedHistory = [
+        { date: todayKey, projectId: selectedProjectId },
+        ...history.filter(entry => entry.date !== todayKey)
+      ].filter(entry => isWithinLastNDays(entry.date, SPOTLIGHT_HISTORY_RETENTION_DAYS, today));
+
+      writeSpotlightHistory(updatedHistory);
+      return selectedProject;
+    };
+
+    const spotlightProject = pickDailySpotlight(getSpotlightCandidates());
+    const spotlightDetails = enrichProject(spotlightProject);
+    const categoryLabel = getCategoryLabel(spotlightProject.section);
+    const detailLink = getProjectDetailLink(spotlightProject);
+
+    spotlightContainer.innerHTML = `<div class="spotlight-media-wrap">
+        <img src="${spotlightProject.img}" alt="${spotlightProject.title} spotlight image" class="project-img spotlight-media ${spotlightProject.imgClass}">
+      </div>
+      <div class="spotlight-content">
+        <div class="spotlight-heading-wrap">
+          <h3 class="spotlight-heading">${spotlightProject.title}</h3>
+          <p class="spotlight-category">${categoryLabel}</p>
+        </div>
+        <p class="spotlight-description">${spotlightProject.desc}</p>
+        <div class="tag-list">${spotlightDetails.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}</div>
+        <div class="spotlight-narrative">
+          <p><strong>Challenge:</strong> ${SPOTLIGHT_NARRATIVE.challenge}</p>
+          <p><strong>Approach:</strong> ${SPOTLIGHT_NARRATIVE.approach}</p>
+          <p><strong>Impact:</strong> ${SPOTLIGHT_NARRATIVE.impact}</p>
+        </div>
+        <div class="metric-list">${spotlightDetails.metrics.map(metric => `<span class="metric"><strong>${metric.value}</strong> ${metric.label}</span>`).join('')}</div>
+        <div class="spotlight-actions">
+          <a href="${detailLink}" class="hero-button">View case study</a>
+          <a href="${spotlightDetails.liveUrl}" class="hero-button" target="_blank" rel="noopener">View live</a>
+        </div>
+      </div>`;
   </script>
+  <script src="crt-reticle.js"></script>
 </body>
 </html>

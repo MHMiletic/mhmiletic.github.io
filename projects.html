@@ -4,24 +4,30 @@
   <meta charset="UTF-8" />
   <title>Projects – Miletic</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    /* Critical nav paint to prevent first-frame flashes before style.css is ready. */
+    body { margin: 0; background: #1a2233; color: #e6edf3; }
+    .site-nav { position: sticky; top: 0; z-index: 1100; width: 100%; border-bottom: 1px solid rgba(255,255,255,0.08); background: linear-gradient(90deg, rgba(11,16,27,0.98), rgba(8,13,24,0.98)); }
+    .site-nav-inner { width: min(100% - 40px, 1800px); margin: 0 auto; min-height: 86px; display: flex; align-items: center; justify-content: flex-start; position: relative; }
+    .site-logo { color: #f5f7fb; text-decoration: none; font-family: "Times New Roman", Georgia, serif; font-size: clamp(2.25rem, 3vw, 3.1rem); line-height: 1; }
+    .site-nav-links { position: absolute; left: 50%; transform: translateX(-50%); display: flex; gap: 2rem; }
+    .site-nav-links a { color: rgba(240,243,248,0.66); text-decoration: none; font-size: 1.01rem; }
+  </style>
+  <link rel="preload" href="style.css" as="style" />
   <link rel="stylesheet" href="style.css" />
 </head>
-<body>
-    <div class="burger-menu-container">
-      <button class="burger-menu-btn" id="burgerMenuBtn" aria-label="Open menu">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-      <nav class="burger-menu" id="burgerMenu">
-        <ul>
-          <li><a href="index.html" id="nav-home">Home</a></li>
-          <li><a href="about.html" id="nav-about">Who Am I Actually?</a></li>
-          <li><a href="projects.html" id="nav-projects">Projects</a></li>
-          <li><a href="contact.html" id="nav-contact">Contact</a></li>
-        </ul>
-      </nav>
+<body class="projects-page">
+  <nav class="site-nav" id="siteNav" aria-label="Primary">
+    <div class="site-nav-inner">
+      <a href="index.html" class="site-logo">miletic</a>
+      <div class="site-nav-links">
+        <a href="index.html" id="nav-home">Home</a>
+        <a href="about.html" id="nav-about">About</a>
+        <a href="projects.html" id="nav-projects">Projects</a>
+        <a href="contact.html" id="nav-contact">Contact</a>
+      </div>
     </div>
+  </nav>
   <header>
     <h1>My Projects</h1>
     <a href="index.html" class="hero-button">Back to Home</a>
@@ -170,34 +176,12 @@
     });
 
     document.getElementById('year').textContent = new Date().getFullYear();
-    // Burger menu toggle
-    const burgerBtn = document.getElementById('burgerMenuBtn');
-    const burgerMenu = document.getElementById('burgerMenu');
-
-    const closeMenu = () => {
-      burgerMenu.classList.remove('open');
-      burgerBtn.classList.remove('active');
-      burgerBtn.setAttribute('aria-expanded', 'false');
+    const siteNav = document.getElementById('siteNav');
+    const updateNavScrollState = () => {
+      siteNav.classList.toggle('scrolled', window.scrollY > 8);
     };
-
-    burgerBtn.setAttribute('aria-expanded', 'false');
-    burgerBtn.addEventListener('click', () => {
-      burgerMenu.classList.toggle('open');
-      burgerBtn.classList.toggle('active');
-      burgerBtn.setAttribute('aria-expanded', burgerMenu.classList.contains('open') ? 'true' : 'false');
-    });
-
-    document.addEventListener('click', (event) => {
-      if (!burgerMenu.contains(event.target) && !burgerBtn.contains(event.target)) {
-        closeMenu();
-      }
-    });
-
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape') {
-        closeMenu();
-      }
-    });
+    updateNavScrollState();
+    window.addEventListener('scroll', updateNavScrollState, { passive: true });
     // Highlight current page in burger menu
     const path = window.location.pathname.split('/').pop();
     if (path === '' || path === 'index.html') {
@@ -210,6 +194,100 @@
       document.getElementById('nav-contact').classList.add('active-page');
     }
     // render projects and add sorting
+    const DISCIPLINE_MAP = {
+      mockups: 'Product / UI',
+      hoodies: 'Graphic / Apparel',
+      personalprojects: 'Experiments'
+    };
+    const SECTION_TAGS = {
+      mockups: ['0 to 1', 'UI', 'Concept'],
+      hoodies: ['Graphic', 'Apparel', 'Print'],
+      personalprojects: ['Visual Lab', 'Experiment', 'Story']
+    };
+    const SECTION_METRICS = {
+      mockups: [
+        { value: '8+', label: 'concept rounds' },
+        { value: '3', label: 'design tools' }
+      ],
+      hoodies: [
+        { value: '20+', label: 'print variants' },
+        { value: '6', label: 'anime series' }
+      ],
+      personalprojects: [
+        { value: '9+', label: 'worlds explored' },
+        { value: '100%', label: 'self-directed' }
+      ]
+    };
+    const HOODIE_DETAIL_PAGES = new Set([
+      'kirby',
+      'kira_alt',
+      'jjk_gojo_alt',
+      'csm',
+      'berserk',
+      'berserk_overlap_alt'
+    ]);
+
+    const SECTION_FOLDER_MAP = {
+      mockups: 'mockups',
+      personalprojects: 'passion',
+      hoodies: 'hoodies'
+    };
+
+    const slugifyTitle = (title) => title
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '_')
+      .replace(/^_+|_+$/g, '');
+
+    const getProjectDetailLink = (project) => {
+      if (project.section === 'hoodies') {
+        const imageFile = project.img.split('/').pop() || '';
+        const baseName = imageFile.replace(/\d+\.png$/i, '');
+        if (HOODIE_DETAIL_PAGES.has(baseName)) {
+          return `projects/hoodies/${baseName}.html`;
+        }
+      }
+
+      const sectionFolder = SECTION_FOLDER_MAP[project.section];
+      if (!sectionFolder) {
+        return `projects.html#${project.section}`;
+      }
+
+      const projectSlug = slugifyTitle(project.title);
+      return `projects/${sectionFolder}/${projectSlug}.html`;
+    };
+
+    const enrichProject = (project) => ({
+      ...project,
+      disciplineLabel: DISCIPLINE_MAP[project.section] || 'Experiments',
+      tags: SECTION_TAGS[project.section] || ['Design'],
+      metrics: SECTION_METRICS[project.section] || [],
+      caseStudyUrl: getProjectDetailLink(project),
+      liveUrl: project.img
+    });
+
+    const renderProjectCard = (project) => {
+      const art = document.createElement('article');
+      art.setAttribute('data-date', project.date);
+      let imgHtml = `<img src="${project.img}" alt="${project.title} project image" class="project-img ${project.imgClass}">`;
+      if (project.section === 'hoodies') {
+        imgHtml = `<a href="${project.caseStudyUrl}">${imgHtml}</a>`;
+      }
+      art.innerHTML = `<h3>${project.title}</h3>
+        <p>${project.desc}</p>
+        ${imgHtml}
+        <div class="project-meta-row">
+          <div class="tag-list"><span class="tag tag-discipline">${project.disciplineLabel}</span>${project.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}</div>
+          <div class="metric-list">${project.metrics.map(metric => `<span class="metric"><strong>${metric.value}</strong> ${metric.label}</span>`).join('')}</div>
+        </div>
+        <div class="project-actions">
+          <a href="${project.caseStudyUrl}" class="hero-button">View case study</a>
+          <a href="${project.liveUrl}" class="hero-button" target="_blank" rel="noopener">View live</a>
+        </div>`;
+      return art;
+    };
+
     const mockupsContainer = document.getElementById('projects-grid-mockups');
     function renderMockups(sortBy) {
       const items = PROJECTS.filter(p=>p.section==='mockups').slice();
@@ -264,18 +342,7 @@
       const count = visibleCounts[section] || items.length;
       container.innerHTML = '';
       items.slice(0, count).forEach(p => {
-        const art = document.createElement('article');
-        art.setAttribute('data-date', p.date);
-        // for hoodies wrap image in link to detail page
-        let imgHtml = `<img src="${p.img}" alt="${p.title} project image" class="project-img ${p.imgClass}">`;
-        if (section === 'hoodies') {
-          // derive base name without trailing number and extension
-          const filename = p.img.split('/').pop();
-          const base = filename.replace(/\d+\.png$/, '');
-          imgHtml = `<a href="projects/hoodies/${base}.html">${imgHtml}</a>`;
-        }
-        art.innerHTML = `<h3>${p.title}</h3>\n          ${imgHtml}\n          <p>${p.desc}</p>`;
-        container.appendChild(art);
+        container.appendChild(renderProjectCard(enrichProject(p)));
       });
       // toggle load more button
       const button = document.querySelector(`button.load-more[data-section="${section}"]`);
@@ -334,5 +401,6 @@
     // initial render
     renderAll();
   </script>
+  <script src="crt-reticle.js"></script>
 </body>
 </html>
