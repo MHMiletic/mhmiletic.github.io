@@ -1,4 +1,4 @@
-.burger-menu a.active-page {
+﻿.burger-menu a.active-page {
   color: #ffe066 !important;
   font-weight: bold;
 }
@@ -71,7 +71,7 @@ html {
 }
 
 .site-nav-inner::after {
-  content: "● Available for Work";
+  content: "ÔùÅ Available for Work";
   position: absolute;
   right: 0;
   top: 50%;
@@ -261,7 +261,7 @@ body.card-style-poster h3 {
 }
 
 section[id] {
-  scroll-margin-top: 90px;
+  scroll-margin-top: 24px;
 }
 
 @media (max-width: 700px) {
@@ -388,7 +388,7 @@ body.projects-page .project-img {
   transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1), height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Custom pop-out effect for BÖTTL and Cook Book */
+/* Custom pop-out effect for B├ûTTL and Cook Book */
 .project-img.bottl-img,
 .project-img.cookbook-img {
   object-position: top;
@@ -1277,6 +1277,12 @@ body.card-style-poster .projects-grid article {
   animation: retro-window-open 320ms steps(10, end);
 }
 
+body.card-style-poster .landing-window,
+body.card-style-poster .availability-window,
+body.card-style-poster .settings-window {
+  background: color-mix(in srgb, var(--poster-card) 86%, transparent);
+}
+
 body.card-style-poster article::before,
 body.card-style-poster .projects-grid article::before {
   content: '';
@@ -1291,7 +1297,7 @@ body.card-style-poster .projects-grid article::before {
 
 body.card-style-poster article::after,
 body.card-style-poster .projects-grid article::after {
-  content: '◻  ✕';
+  content: '\25FB\00A0\00A0\2715';
   position: absolute;
   right: 0.55rem;
   top: 0.18rem;
@@ -1299,6 +1305,16 @@ body.card-style-poster .projects-grid article::after {
   letter-spacing: 0.12rem;
   color: var(--poster-window-icon);
   font-weight: 700;
+}
+
+body.card-style-poster .settings-window::after {
+  content: '\25FB\00A0\00A0\2715';
+  color: var(--poster-window-icon);
+}
+
+body.card-style-crt .settings-window::after {
+  content: 'WX CH 07';
+  color: #d6f2ff;
 }
 
 body.card-style-poster .project-img {
@@ -1464,6 +1480,22 @@ body.card-style-crt .projects-grid article {
   position: relative;
   padding-top: 2.2rem;
   overflow: hidden;
+}
+
+body.card-style-crt .landing-window,
+body.card-style-crt .availability-window,
+body.card-style-crt .settings-window {
+  background:
+    radial-gradient(circle at 50% 45%, rgba(232, 252, 255, 0.14) 0%, rgba(232, 252, 255, 0.05) 38%, rgba(7, 18, 28, 0.08) 100%),
+    repeating-linear-gradient(
+      to bottom,
+      rgba(208, 247, 255, 0.04) 0px,
+      rgba(208, 247, 255, 0.04) 1px,
+      rgba(6, 16, 24, 0.07) 2px,
+      rgba(6, 16, 24, 0.07) 3px
+    ),
+    linear-gradient(180deg, rgba(224, 247, 255, 0.14), rgba(224, 247, 255, 0.04) 42%, rgba(19, 41, 59, 0.08) 100%),
+    color-mix(in srgb, var(--crt-panel) 82%, transparent);
 }
 
 body.card-style-crt article::before,

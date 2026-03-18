@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8" />
-	<title>Contact – Miletic</title>
+	<title>Contact â€“ Miletic</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<style>
 		/* Critical nav paint to prevent first-frame flashes before style.css is ready. */
@@ -17,17 +17,6 @@
 	<link rel="stylesheet" href="style.css" />
 </head>
 <body>
-	<nav class="site-nav" id="siteNav" aria-label="Primary">
-		<div class="site-nav-inner">
-			<a href="index.html" class="site-logo">miletic</a>
-			<div class="site-nav-links">
-				<a href="index.html" id="nav-home">Home</a>
-				<a href="about.html" id="nav-about">About</a>
-				<a href="projects.html" id="nav-projects">Projects</a>
-				<a href="contact.html" id="nav-contact">Contact</a>
-			</div>
-		</div>
-	</nav>
 	<header>
 		<h1>Contact</h1>
 	</header>
@@ -61,7 +50,7 @@
 		</section>
 	</main>
 	<footer>
-		<p>© <span id="year"></span> Mihajlo Miletic</p>
+		<p>Â© <span id="year"></span> Mihajlo Miletic</p>
 	</footer>
 	<script>
 		const styleClassMap = {
@@ -152,24 +141,6 @@
 		});
 
 		document.getElementById('year').textContent = new Date().getFullYear();
-		const siteNav = document.getElementById('siteNav');
-		const updateNavScrollState = () => {
-			siteNav.classList.toggle('scrolled', window.scrollY > 8);
-		};
-		updateNavScrollState();
-		window.addEventListener('scroll', updateNavScrollState, { passive: true });
-
-		// Highlight current page in burger menu
-		const path = window.location.pathname.split('/').pop();
-		if (path === '' || path === 'index.html') {
-			document.getElementById('nav-home').classList.add('active-page');
-		} else if (path === 'projects.html') {
-			document.getElementById('nav-projects').classList.add('active-page');
-		} else if (path === 'about.html') {
-			document.getElementById('nav-about').classList.add('active-page');
-		} else if (path === 'contact.html') {
-			document.getElementById('nav-contact').classList.add('active-page');
-		}
 
 		const copyEmailBtn = document.getElementById('copyEmailBtn');
 		copyEmailBtn.addEventListener('click', async () => {
@@ -194,6 +165,7 @@
 			window.location.href = `mailto:mmiletic853@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 		});
 	</script>
+	<script src="windows-sky-effects.js"></script>
 	<script src="crt-reticle.js"></script>
 </body>
 </html>

@@ -8,18 +8,6 @@
 	<link rel="stylesheet" href="style.css" />
 </head>
 <body>
-	<nav class="site-nav" id="siteNav" aria-label="Primary">
-		<div class="site-nav-inner">
-			<a href="index.html" class="site-logo">miletic</a>
-			<div class="site-nav-links">
-				<a href="index.html" id="nav-home">Home</a>
-				<a href="about.html" id="nav-about" class="active-page">About</a>
-				<a href="projects.html" id="nav-projects">Projects</a>
-				<a href="contact.html" id="nav-contact">Contact</a>
-			</div>
-		</div>
-	</nav>
-
 	<header>
 		<h1>Who Am I?</h1>
 	</header>
@@ -32,20 +20,13 @@
 	</main>
 
 	<footer>
-		<p>© <span id="year"></span> Mihajlo Miletic</p>
+		<p>Â© <span id="year"></span> Mihajlo Miletic</p>
 	</footer>
 
 	<script>
 		document.getElementById('year').textContent = new Date().getFullYear();
-
-		const siteNav = document.getElementById('siteNav');
-		const updateNavScrollState = () => {
-			siteNav.classList.toggle('scrolled', window.scrollY > 8);
-		};
-
-		updateNavScrollState();
-		window.addEventListener('scroll', updateNavScrollState, { passive: true });
 	</script>
+	<script src="windows-sky-effects.js"></script>
 	<script src="crt-reticle.js"></script>
 </body>
 </html>
