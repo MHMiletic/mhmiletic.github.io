@@ -2,149 +2,32 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>About â€“ Miletic</title>
+  <title>About Me - Miletic</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="About Mihajlo Miletic" />
   <link rel="preload" href="style.css" as="style" />
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="window-system.css" />
 </head>
 <body>
-  <header>
-    <h1>About Me</h1>
-  </header>
-  <main>
-    <section>
-      <h2>Who I Am</h2>
-      <p>I am Mihajlo Miletic, a creative builder focused on visual design, storytelling, and practical digital experiences.</p>
-      <p>I like turning rough concepts into polished work through quick iteration, clear structure, and strong attention to detail.</p>
-    </section>
-
-    <section>
-      <h2>Core Strengths</h2>
-      <div class="pill-list" aria-label="Core strengths">
-        <span class="pill">Visual Design</span>
-        <span class="pill">Creative Direction</span>
-        <span class="pill">Front-End Development</span>
-        <span class="pill">Brand Exploration</span>
-        <span class="pill">Rapid Iteration</span>
+  <main class="window-page-stage">
+    <article class="landing-window" aria-label="About page window">
+      <div class="landing-window-dragbar" aria-hidden="true"></div>
+      <span class="landing-window-title">About Me</span>
+      <div class="window-content">
+        <h1>Hey, I am Mike.</h1>
+        <p>I build visual experiences that combine design, storytelling, and interactive web craft.</p>
+        <p>My focus is creating work that feels clear, expressive, and memorable across branding, interfaces, and creative experiments.</p>
+        <h2>Core strengths</h2>
+        <ul>
+          <li>Creative direction and visual design</li>
+          <li>Front-end implementation and interaction polish</li>
+          <li>Concept development and rapid iteration</li>
+        </ul>
       </div>
-    </section>
-
-    <section>
-      <h2>How I Work</h2>
-      <div class="intro-highlight-grid">
-        <article class="highlight-card">
-          <h3>Discover</h3>
-          <p>I gather references and define a clear direction before committing to execution.</p>
-        </article>
-        <article class="highlight-card">
-          <h3>Build</h3>
-          <p>I prototype quickly, test ideas visually, and refine toward a clean final result.</p>
-        </article>
-        <article class="highlight-card">
-          <h3>Deliver</h3>
-          <p>I focus on clarity, consistency, and showcasing work in a way people can understand fast.</p>
-        </article>
-      </div>
-      <div class="quick-links">
-        <a href="projects.html" class="hero-button">View projects</a>
-        <a href="contact.html" class="hero-button">Letâ€™s collaborate</a>
-      </div>
-    </section>
+    </article>
   </main>
-  <footer>
-    <p>Â© <span id="year"></span> Mihajlo Miletic</p>
-  </footer>
-  <script>
-    const styleClassMap = {
-      default: '',
-      poster: 'card-style-poster',
-      crt: 'card-style-crt'
-    };
-    const colorThemeMap = {
-      lilac: 'theme-lilac',
-      sunset: 'theme-sunset',
-      mint: 'theme-mint',
-      night: 'theme-night'
-    };
-    const preferredCardStyle = localStorage.getItem('preferredCardStyle');
-    if (preferredCardStyle && styleClassMap[preferredCardStyle]) {
-      document.body.classList.add(styleClassMap[preferredCardStyle]);
-    }
-    const preferredColorTheme = localStorage.getItem('preferredColorTheme');
-    if (preferredColorTheme && colorThemeMap[preferredColorTheme]) {
-      document.body.classList.add(colorThemeMap[preferredColorTheme]);
-    }
 
-    const retroSoundEnabled = localStorage.getItem('retroSoundEnabled') === 'true';
-    let audioContext = null;
-    let lastBeepAt = 0;
-
-    const ensureAudioContext = () => {
-      if (!audioContext) {
-        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-        if (!AudioContextClass) {
-          return null;
-        }
-        audioContext = new AudioContextClass();
-      }
-      if (audioContext.state === 'suspended') {
-        audioContext.resume();
-      }
-      return audioContext;
-    };
-
-    const playRetroBeep = () => {
-      if (!retroSoundEnabled || !document.body.classList.contains('card-style-poster')) {
-        return;
-      }
-      const now = performance.now();
-      if (now - lastBeepAt < 85) {
-        return;
-      }
-      lastBeepAt = now;
-
-      const context = ensureAudioContext();
-      if (!context || context.state !== 'running') {
-        return;
-      }
-
-      const oscillator = context.createOscillator();
-      const gainNode = context.createGain();
-      oscillator.type = 'square';
-      oscillator.frequency.setValueAtTime(880, context.currentTime);
-      oscillator.frequency.setValueAtTime(620, context.currentTime + 0.035);
-      gainNode.gain.setValueAtTime(0.0001, context.currentTime);
-      gainNode.gain.exponentialRampToValueAtTime(0.035, context.currentTime + 0.01);
-      gainNode.gain.exponentialRampToValueAtTime(0.0001, context.currentTime + 0.08);
-      oscillator.connect(gainNode);
-      gainNode.connect(context.destination);
-      oscillator.start();
-      oscillator.stop(context.currentTime + 0.09);
-    };
-
-    document.addEventListener('pointerover', (event) => {
-      const currentTarget = event.target.closest('a,button,input,select,textarea,.filter-chip,.hero-button');
-      if (!currentTarget) {
-        return;
-      }
-      const previousTarget = event.relatedTarget && event.relatedTarget.closest
-        ? event.relatedTarget.closest('a,button,input,select,textarea,.filter-chip,.hero-button')
-        : null;
-      if (currentTarget === previousTarget) {
-        return;
-      }
-      playRetroBeep();
-    });
-
-    document.addEventListener('focusin', (event) => {
-      if (event.target.closest('a,button,input,select,textarea,.filter-chip,.hero-button')) {
-        playRetroBeep();
-      }
-    });
-
-    document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
-  <script src="windows-sky-effects.js"></script>
-  <script src="crt-reticle.js"></script>
+  <script src="window-system.js"></script>
 </body>
 </html>

@@ -39,7 +39,7 @@
   overflow: hidden;
 }
 
-body:not(.card-style-poster):not(.card-style-crt) .case-window::before {
+body:not(.card-style-poster) .case-window::before {
   content: attr(data-window-label);
   position: absolute;
   top: 0;
@@ -58,7 +58,7 @@ body:not(.card-style-poster):not(.card-style-crt) .case-window::before {
   border-bottom: 1px solid #4a607c;
 }
 
-body:not(.card-style-poster):not(.card-style-crt) .case-window::after {
+body:not(.card-style-poster) .case-window::after {
   content: '[ ] x';
   position: absolute;
   top: 0.12rem;

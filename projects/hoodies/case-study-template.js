@@ -1,23 +1,17 @@
 (() => {
-  const styleClassMap = {
-    default: '',
-    poster: 'card-style-poster',
-    crt: 'card-style-crt'
-  };
+  document.body.classList.add('card-style-poster');
+
   const colorThemeMap = {
-    default: '',
+    classic: '',
     lilac: 'theme-lilac',
     sunset: 'theme-sunset',
     mint: 'theme-mint',
-    night: 'theme-night'
+    night: 'theme-night',
+    bright: 'theme-bright'
   };
 
-  const preferredCardStyle = localStorage.getItem('preferredCardStyle') || 'default';
-  const preferredColorTheme = localStorage.getItem('preferredColorTheme') || 'default';
+  const preferredColorTheme = localStorage.getItem('preferredColorTheme') || 'night';
 
-  if (styleClassMap[preferredCardStyle]) {
-    document.body.classList.add(styleClassMap[preferredCardStyle]);
-  }
   if (colorThemeMap[preferredColorTheme]) {
     document.body.classList.add(colorThemeMap[preferredColorTheme]);
   }

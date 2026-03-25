@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Mockups - Miletic</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Mockups folder projects" />
+  <link rel="preload" href="style.css" as="style" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="window-system.css" />
+</head>
+<body data-folder="mockups">
+  <main class="window-page-stage">
+    <article class="landing-window" aria-label="Mockups folder page window">
+      <div class="landing-window-dragbar" aria-hidden="true"></div>
+      <span class="landing-window-title">Folder</span>
+      <div class="window-content">
+        <h1 id="folderTitle">mock ups</h1>
+        <p>Projects from the mockups folder.</p>
+
+        <div class="projects-toolbar" aria-label="Folder sorting controls">
+          <label class="projects-sort-label" for="folderProjectSort">sort</label>
+          <select id="folderProjectSort" class="projects-sort-select">
+            <option value="date-desc">newest first</option>
+            <option value="date-asc">oldest first</option>
+            <option value="title-asc">title (a-z)</option>
+          </select>
+          <p class="projects-category-links"><a href="projects.html">back to all work</a></p>
+        </div>
+
+        <section id="folderProjectsGrid" class="page-project-grid" aria-label="Folder projects grid"></section>
+      </div>
+    </article>
+  </main>
+
+  <script src="projects-data.js"></script>
+  <script src="window-system.js"></script>
+  <script src="projects-browser.js"></script>
+</body>
+</html>

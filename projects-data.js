@@ -1,254 +1,367 @@
-// central data for all projects
+// Dynamic project registry
+//
+// HOW TO ADD A NEW PROJECT (minimal steps):
+// 1) Put images in projects/<folder>/
+// 2) Add one object to PROJECTS using the template below
+//
+// TEMPLATE:
+// {
+//   slug: 'unique-slug',
+//   title: 'Project Title',
+//   category: 'mock-ups', // primary category
+//   categories: ['mock-ups', 'illustrations'], // optional additional categories
+//   date: '2026-03-22',
+//   cover: 'projects/folder/cover-image.png',
+//   shots: ['projects/folder/cover-image.png'],
+//   description: 'Short project description.'
+// }
+
+const PROJECT_CATEGORIES = {
+  'mock-ups': {
+    key: 'mock-ups',
+    label: 'mock ups',
+    page: 'projects-mock-ups.html'
+  },
+  'advertisement-ish': {
+    key: 'advertisement-ish',
+    label: 'advertisement-ish',
+    page: 'projects-advertisement-ish.html'
+  },
+  'personal-projects': {
+    key: 'personal-projects',
+    label: 'personal projects',
+    page: 'projects-personal-projects.html'
+  },
+  illustrations: {
+    key: 'illustrations',
+    label: 'illustrations',
+    page: 'projects.html'
+  },
+  'graphical-designs': {
+    key: 'graphical-designs',
+    label: 'graphical Designs',
+    page: 'projects.html'
+  }
+};
+
+const PROJECT_FOLDERS = {
+  hoodies: {
+    key: 'hoodies',
+    label: 'hoodies',
+    page: 'projects-hoodies.html'
+  },
+  mockups: {
+    key: 'mockups',
+    label: 'mock ups',
+    page: 'projects-mockups.html'
+  },
+  passion: {
+    key: 'passion',
+    label: 'personal projects',
+    page: 'projects-passion.html'
+  }
+};
+
 const PROJECTS = [
   {
-    section: 'mockups',
-    date: '2026-02-25',
+    slug: 'zelda-cook-book',
     title: 'Zelda Cook Book',
-    img: 'projects/mockups/COVER_ZELDA_alt.jpg',
-    imgClass: 'cookbook-img',
-    desc: 'Who would not want their waterbottle have a bit more flare.'
+    category: 'mock-ups',
+    date: '2026-02-25',
+    cover: 'projects/mockups/Zelda Cookbook/COVER_ZELDA_alt.jpg',
+    shots: ['projects/mockups/Zelda Cookbook/COVER_ZELDA_alt.jpg', 'projects/mockups/Zelda Cookbook/Zelda_cookbook.jpg'],
+    description: 'Cookbook concept with retro game-inspired art direction.'
   },
   {
-    section: 'mockups',
-    date: '2026-02-22',
+    slug: 'mountainrange',
     title: 'Mountainrange',
-    img: 'projects/mockups/adventure.png',
-    imgClass: 'mountainrange-img',
-    desc: 'Who would not want a mountain range that follows them around and does their bidding.'
+    category: 'mock-ups',
+    date: '2026-02-22',
+    cover: 'projects/mockups/Mountainrange/adventure.png',
+    shots: ['projects/mockups/Mountainrange/adventure.png', 'projects/mockups/Mountainrange/mountaintravel_mockup.png'],
+    description: 'Concept visual focused on depth, landscape, and atmosphere.'
   },
   {
-    section: 'mockups',
+    slug: 'bottl',
+    title: 'BOTTL',
+    category: 'mock-ups',
     date: '2026-02-20',
-    title: 'BÖTTL',
-    img: 'projects/mockups/bottl.png',
-    imgClass: 'bottl-img',
-    desc: 'Who would not want their waterbottle have a bit more flare.'
+    cover: 'projects/mockups/bottl/bottl.png',
+    shots: [
+      'projects/mockups/bottl/bottl.png',
+      'projects/mockups/bottl/waterbottle_alt.png',
+      'projects/mockups/bottl/waterbottle_mockup.png'
+    ],
+    description: 'Packaging-style mockup with playful product branding.'
   },
- {
-    section: 'mockups',
-    date: '2021-02-20',
+  {
+    slug: 'movieposter',
     title: 'Movieposter',
-    img: 'projects/mockups/Movieposter.png',
-    imgClass: 'movieposter-img',
-    desc: 'Who would not want their waterbottle have a bit more flare.'
-  },
-  // hoodies entries (use placeholder dates)
-  {
-    section: 'hoodies',
-    date: 'YYYY-MM-DD',
-    title: 'kirby1',
-    img: 'projects/hoodies/kirby1.png',
-    imgClass: 'hoodie-img',
-    desc: 'Hoodie design'
+    category: 'mock-ups',
+    date: '2021-02-20',
+    cover: 'projects/mockups/movieposter/Movieposter.png',
+    shots: ['projects/mockups/movieposter/Movieposter.png'],
+    description: 'Poster concept balancing typography, contrast, and composition.'
   },
   {
-    section: 'hoodies',
-    date: 'YYYY-MM-DD',
-    title: 'kirby2',
-    img: 'projects/hoodies/kirby2.png',
-    imgClass: 'hoodie-img',
-    desc: 'Hoodie design'
+    slug: 'warframe-instagram-ad',
+    title: 'Warframe Instagram Ad',
+    category: 'advertisement-ish',
+    date: '2026-02-18',
+    cover: 'projects/mockups/warframe/warframe_instagram_ad_cropped.jpg',
+    shots: ['projects/mockups/warframe/warframe_instagram_ad_cropped.jpg'],
+    description: 'Ad-style social creative optimized for fast visual impact.'
   },
   {
-    section: 'hoodies',
-    date: 'YYYY-MM-DD',
-    title: 'kirby3',
-    img: 'projects/hoodies/kirby3.png',
-    imgClass: 'hoodie-img',
-    desc: 'Hoodie design'
+    slug: 'instagram-hoodie-ad',
+    title: 'Instagram Hoodie Ad',
+    category: 'advertisement-ish',
+    date: '2026-02-17',
+    cover: 'projects/mockups/hoodie ad/instagram hoodie.jpg',
+    shots: ['projects/mockups/hoodie ad/instagram hoodie.jpg'],
+    description: 'Campaign-style image combining apparel and social framing.'
   },
   {
-    section: 'hoodies',
-    date: 'YYYY-MM-DD',
-    title: 'kira alt1',
-    img: 'projects/hoodies/kira_alt1.png',
-    imgClass: 'hoodie-img',
-    desc: 'Hoodie design'
+    slug: 'techwear-edit',
+    title: 'Techwear Edit',
+    category: 'advertisement-ish',
+    date: '2026-02-16',
+    cover: 'projects/mockups/techwear/techwear_edit.png',
+    shots: ['projects/mockups/techwear/techwear_edit.png'],
+    description: 'Ad-ish edit focused on product silhouette and contrast.'
   },
   {
-    section: 'hoodies',
-    date: 'YYYY-MM-DD',
-    title: 'kira alt2',
-    img: 'projects/hoodies/kira_alt2.png',
-    imgClass: 'hoodie-img',
-    desc: 'Hoodie design'
+    slug: 'tablet-mockup-mechabellum',
+    title: 'Tablet Mockup + Mechabellum',
+    category: 'advertisement-ish',
+    date: '2026-02-15',
+    cover: 'projects/mockups/Mechabellum/tablet mockup + mechabellum.jpg',
+    shots: ['projects/mockups/Mechabellum/tablet mockup + mechabellum.jpg'],
+    description: 'Marketing-style composition for a device/game visual pairing.'
   },
   {
-    section: 'hoodies',
-    date: 'YYYY-MM-DD',
-    title: 'kira alt3',
-    img: 'projects/hoodies/kira_alt3.png',
-    imgClass: 'hoodie-img',
-    desc: 'Hoodie design'
+    slug: 'kirby-hoodie',
+    title: 'Kirby Hoodie',
+    category: 'advertisement-ish',
+    date: '2026-02-12',
+    cover: 'projects/hoodies/kirby1.png',
+    shots: ['projects/hoodies/kirby1.png', 'projects/hoodies/kirby2.png', 'projects/hoodies/kirby3.png'],
+    description: 'Apparel concept shown across multiple campaign shots.'
   },
   {
-    section: 'hoodies',
-    date: 'YYYY-MM-DD',
-    title: 'jjk gojo alt1',
-    img: 'projects/hoodies/jjk_gojo_alt1.png',
-    imgClass: 'hoodie-img',
-    desc: 'Hoodie design'
+    slug: 'kira-alt-hoodie',
+    title: 'Kira Alt Hoodie',
+    category: 'advertisement-ish',
+    date: '2026-02-11',
+    cover: 'projects/hoodies/kira_alt1.png',
+    shots: ['projects/hoodies/kira_alt1.png', 'projects/hoodies/kira_alt2.png', 'projects/hoodies/kira_alt3.png'],
+    description: 'Variant hoodie design presented in a 3-shot sequence.'
   },
   {
-    section: 'hoodies',
-    date: 'YYYY-MM-DD',
-    title: 'jjk gojo alt2',
-    img: 'projects/hoodies/jjk_gojo_alt2.png',
-    imgClass: 'hoodie-img',
-    desc: 'Hoodie design'
+    slug: 'jjk-gojo-alt-hoodie',
+    title: 'JJK Gojo Alt Hoodie',
+    category: 'advertisement-ish',
+    date: '2026-02-10',
+    cover: 'projects/hoodies/jjk_gojo_alt1.png',
+    shots: ['projects/hoodies/jjk_gojo_alt1.png', 'projects/hoodies/jjk_gojo_alt2.png', 'projects/hoodies/jjk_gojo_alt3.png'],
+    description: 'Hoodie artwork with alternate shot set for promo use.'
   },
   {
-    section: 'hoodies',
-    date: 'YYYY-MM-DD',
-    title: 'jjk gojo alt3',
-    img: 'projects/hoodies/jjk_gojo_alt3.png',
-    imgClass: 'hoodie-img',
-    desc: 'Hoodie design'
+    slug: 'csm-hoodie',
+    title: 'CSM Hoodie',
+    category: 'advertisement-ish',
+    date: '2026-02-09',
+    cover: 'projects/hoodies/csm1.png',
+    shots: ['projects/hoodies/csm1.png', 'projects/hoodies/csm2.png', 'projects/hoodies/csm3.png'],
+    description: 'Three-shot apparel concept with strong front-facing visual hook.'
   },
   {
-    section: 'hoodies',
-    date: 'YYYY-MM-DD',
-    title: 'csm1',
-    img: 'projects/hoodies/csm1.png',
-    imgClass: 'hoodie-img',
-    desc: 'Hoodie design'
+    slug: 'berserk-hoodie',
+    title: 'Berserk Hoodie',
+    category: 'advertisement-ish',
+    date: '2026-02-08',
+    cover: 'projects/hoodies/berserk1.png',
+    shots: ['projects/hoodies/berserk1.png', 'projects/hoodies/berserk2.png', 'projects/hoodies/berserk3.png'],
+    description: 'Branded hoodie concept presented as a campaign trio.'
   },
   {
-    section: 'hoodies',
-    date: 'YYYY-MM-DD',
-    title: 'csm2',
-    img: 'projects/hoodies/csm2.png',
-    imgClass: 'hoodie-img',
-    desc: 'Hoodie design'
+    slug: 'berserk-overlap-alt-hoodie',
+    title: 'Berserk Overlap Alt Hoodie',
+    category: 'advertisement-ish',
+    date: '2026-02-07',
+    cover: 'projects/hoodies/berserk_overlap_alt1.png',
+    shots: [
+      'projects/hoodies/berserk_overlap_alt1.png',
+      'projects/hoodies/berserk_overlap_alt2.png',
+      'projects/hoodies/berserk_overlap_alt3.png'
+    ],
+    description: 'Alternate overlap composition for apparel promotion.'
   },
   {
-    section: 'hoodies',
-    date: 'YYYY-MM-DD',
-    title: 'csm3',
-    img: 'projects/hoodies/csm3.png',
-    imgClass: 'hoodie-img',
-    desc: 'Hoodie design'
+    slug: 'where-the-skies-end',
+    title: 'Where The Skies End',
+    category: 'personal-projects',
+    date: '2026-02-05',
+    cover: 'projects/passion/starset/where the skies end.png',
+    shots: ['projects/passion/starset/where the skies end.png'],
+    description: 'Personal visual narrative study.'
   },
   {
-    section: 'hoodies',
-    date: 'YYYY-MM-DD',
-    title: 'berserk1',
-    img: 'projects/hoodies/berserk1.png',
-    imgClass: 'hoodie-img',
-    desc: 'Hoodie design'
+    slug: 'waking-up',
+    title: 'Waking Up',
+    category: 'personal-projects',
+    date: '2026-02-04',
+    cover: 'projects/passion/starset/waking up.png',
+    shots: ['projects/passion/starset/waking up.png'],
+    description: 'Personal mood-driven composition.'
   },
   {
-    section: 'hoodies',
-    date: 'YYYY-MM-DD',
-    title: 'berserk2',
-    img: 'projects/hoodies/berserk2.png',
-    imgClass: 'hoodie-img',
-    desc: 'Hoodie design'
+    slug: 'trials',
+    title: 'Trials',
+    category: 'personal-projects',
+    date: '2026-02-03',
+    cover: 'projects/passion/starset/trials.png',
+    shots: ['projects/passion/starset/trials.png'],
+    description: 'Personal concept exploring rhythm and tension.'
   },
   {
-    section: 'hoodies',
-    date: 'YYYY-MM-DD',
-    title: 'berserk3',
-    img: 'projects/hoodies/berserk3.png',
-    imgClass: 'hoodie-img',
-    desc: 'Hoodie design'
+    slug: 'solstice',
+    title: 'Solstice',
+    category: 'personal-projects',
+    date: '2026-02-02',
+    cover: 'projects/passion/starset/solstice.png',
+    shots: ['projects/passion/starset/solstice.png'],
+    description: 'Personal artwork centered on seasonal contrast.'
   },
   {
-    section: 'hoodies',
-    date: 'YYYY-MM-DD',
-    title: 'berserk overlap alt1',
-    img: 'projects/hoodies/berserk_overlap_alt1.png',
-    imgClass: 'hoodie-img',
-    desc: 'Hoodie design'
+    slug: 'perfect-machine',
+    title: 'Perfect Machine',
+    category: 'personal-projects',
+    date: '2026-02-01',
+    cover: 'projects/passion/starset/perfect machine.png',
+    shots: ['projects/passion/starset/perfect machine.png'],
+    description: 'Personal experiment with structure and form.'
   },
   {
-    section: 'hoodies',
-    date: 'YYYY-MM-DD',
-    title: 'berserk overlap alt2',
-    img: 'projects/hoodies/berserk_overlap_alt2.png',
-    imgClass: 'hoodie-img',
-    desc: 'Hoodie design'
+    slug: 'other-worlds-than-these',
+    title: 'Other Worlds Than These',
+    category: 'personal-projects',
+    date: '2026-01-31',
+    cover: 'projects/passion/starset/other worlds than these.png',
+    shots: ['projects/passion/starset/other worlds than these.png'],
+    description: 'Personal piece about scale and imagined spaces.'
   },
   {
-    section: 'hoodies',
-    date: 'YYYY-MM-DD',
-    title: 'berserk overlap alt3',
-    img: 'projects/hoodies/berserk_overlap_alt3.png',
-    imgClass: 'hoodie-img',
-    desc: 'Hoodie design'
-  },
-  // passion/personal projects entries
-  {
-    section: 'personalprojects',
-    date: 'YYYY-MM-DD',
-    title: 'Where the skies end',
-    img: 'projects/passion/where the skies end.png',
-    imgClass: 'personal-img',
-    desc: 'Personal project'
-  },
-  {
-    section: 'personalprojects',
-    date: 'YYYY-MM-DD',
-    title: 'waking up',
-    img: 'projects/passion/waking up.png',
-    imgClass: 'personal-img',
-    desc: 'Personal project'
-  },
-  {
-    section: 'personalprojects',
-    date: 'YYYY-MM-DD',
-    title: 'trials',
-    img: 'projects/passion/trials.png',
-    imgClass: 'personal-img',
-    desc: 'Personal project'
-  },
-  {
-    section: 'personalprojects',
-    date: 'YYYY-MM-DD',
-    title: 'solstice',
-    img: 'projects/passion/solstice.png',
-    imgClass: 'personal-img',
-    desc: 'Personal project'
-  },
-  {
-    section: 'personalprojects',
-    date: 'YYYY-MM-DD',
-    title: 'perfect machine',
-    img: 'projects/passion/perfect machine.png',
-    imgClass: 'personal-img',
-    desc: 'Personal project'
-  },
-  {
-    section: 'personalprojects',
-    date: 'YYYY-MM-DD',
-    title: 'other worlds than these',
-    img: 'projects/passion/other worlds than these.png',
-    imgClass: 'personal-img',
-    desc: 'Personal project'
-  },
-  {
-    section: 'personalprojects',
-    date: 'YYYY-MM-DD',
+    slug: 'manifest',
     title: 'Manifest',
-    img: 'projects/passion/Manifest.png',
-    imgClass: 'personal-img',
-    desc: 'Personal project'
+    category: 'personal-projects',
+    date: '2026-01-30',
+    cover: 'projects/passion/starset/Manifest.png',
+    shots: ['projects/passion/starset/Manifest.png'],
+    description: 'Personal typographic and symbolic exploration.'
   },
   {
-    section: 'personalprojects',
-    date: 'YYYY-MM-DD',
-    title: 'faultline_2',
-    img: 'projects/passion/faultline_2.png',
-    imgClass: 'personal-img',
-    desc: 'Personal project'
+    slug: 'faultline-2',
+    title: 'Faultline 2',
+    category: 'personal-projects',
+    date: '2026-01-29',
+    cover: 'projects/passion/starset/faultline_2.png',
+    shots: ['projects/passion/starset/faultline_2.png'],
+    description: 'Personal abstract composition with fracture motif.'
   },
   {
-    section: 'personalprojects',
-    date: 'YYYY-MM-DD',
+    slug: 'echo',
     title: 'Echo',
-    img: 'projects/passion/Echo.png',
-    imgClass: 'personal-img',
-    desc: 'Personal project'
+    category: 'personal-projects',
+    date: '2026-01-28',
+    cover: 'projects/passion/starset/Echo.png',
+    shots: ['projects/passion/starset/Echo.png'],
+    description: 'Personal visual loop study.'
   }
-  // add more entries as needed, include section values 'socialmedia', 'personalprojects', or 'hoodies'
 ];
+
+const PROJECTS_BY_SLUG = Object.fromEntries(PROJECTS.map((project) => [project.slug, project]));
+
+const getProjectFolderKey = (project) => {
+  const coverPath = String(project && project.cover ? project.cover : '');
+  const folderMatch = coverPath.match(/^projects\/([^/]+)\//i);
+  return folderMatch ? folderMatch[1].toLowerCase() : 'other';
+};
+
+const getProjectCategoryKeys = (project) => {
+  const categories = Array.isArray(project && project.categories)
+    ? project.categories
+    : [project && project.category ? project.category : ''];
+
+  return [...new Set(
+    categories
+      .map((category) => String(category || '').trim())
+      .filter(Boolean)
+  )];
+};
+
+const getProjectsByCategory = (categoryKey) =>
+  PROJECTS.filter((project) => getProjectCategoryKeys(project).includes(categoryKey));
+
+const getProjectsByFolder = (folderKey) =>
+  PROJECTS.filter((project) => getProjectFolderKey(project) === folderKey);
+
+const COLLECTIONS = [
+  {
+    slug: 'all-hoodies',
+    title: 'All Hoodies',
+    category: 'advertisement-ish',
+    description: 'Every hoodie concept and variant in one place.',
+    filter: {
+      folder: 'hoodies'
+    }
+  },
+  {
+    slug: 'starset-logo-reconcepts',
+    title: 'Starset Logo Reconcepts',
+    category: 'personal-projects',
+    description: 'Personal project set: reconceptualizations of Starset song logos.',
+    filter: {
+      pathStartsWith: 'projects/passion/starset/'
+    }
+  }
+];
+
+const getCollectionProjects = (collection) => {
+  if (!collection || !collection.filter) {
+    return [];
+  }
+
+  return PROJECTS.filter((project) => {
+    if (collection.filter.folder && getProjectFolderKey(project) === collection.filter.folder) {
+      return true;
+    }
+
+    if (collection.filter.pathStartsWith) {
+      const cover = String(project.cover || '');
+      return cover.startsWith(collection.filter.pathStartsWith);
+    }
+
+    return false;
+  });
+};
+
+const COLLECTIONS_BY_SLUG = Object.fromEntries(COLLECTIONS.map((collection) => [collection.slug, collection]));
+
+const sortProjects = (projects, mode) => {
+  const sorted = projects.slice();
+
+  if (mode === 'title-asc') {
+    sorted.sort((a, b) => a.title.localeCompare(b.title));
+    return sorted;
+  }
+
+  if (mode === 'date-asc') {
+    sorted.sort((a, b) => String(a.date).localeCompare(String(b.date)));
+    return sorted;
+  }
+
+  sorted.sort((a, b) => String(b.date).localeCompare(String(a.date)));
+  return sorted;
+};
+

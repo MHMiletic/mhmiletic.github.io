@@ -54,16 +54,16 @@
     .landing-window.is-dragging .landing-window-title {
       cursor: grabbing;
     }
-    body:not(.card-style-poster):not(.card-style-crt) .landing-window {
+    body:not(.card-style-poster) .landing-window {
       background: rgba(22, 27, 34, 0.88);
       border: 1px solid #30363d;
       border-radius: 14px;
-      padding: 2.45rem 1rem 1rem;
+      padding: 2.45rem 1rem 1.75rem;
       position: relative;
       overflow: hidden;
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.24);
     }
-    body:not(.card-style-poster):not(.card-style-crt) .landing-window::before {
+    body:not(.card-style-poster) .landing-window::before {
       content: '';
       position: absolute;
       top: 0;
@@ -103,7 +103,7 @@
       z-index: 2;
       pointer-events: none;
     }
-    body:not(.card-style-poster):not(.card-style-crt) .landing-window::after {
+    body:not(.card-style-poster) .landing-window::after {
       content: '[ ] x';
       position: absolute;
       top: 0.12rem;
@@ -219,9 +219,6 @@
       isolation: isolate;
       /* Remove default retro highlight for these, use custom below */
     }
-    .landing-window-icon-link.no-retro-highlight {
-      /* For explicit opt-out if needed */
-    }
     .landing-window-icon-link::before {
       content: '';
       position: absolute;
@@ -296,10 +293,22 @@
       text-decoration-thickness: 0.08em;
       text-underline-offset: 0.12em;
       text-decoration-color: currentColor;
+      position: relative;
+      z-index: 2;
     }
     .landing-window-name-link {
       color: inherit;
       text-decoration: none;
+      display: inline-block;
+      position: relative;
+      padding: 0 0.08em;
+      isolation: isolate;
+    }
+    .landing-window-name-link::before {
+      z-index: 1;
+    }
+    .landing-window-name-link::after {
+      z-index: 3;
     }
     .availability-window {
       position: fixed;
@@ -351,6 +360,24 @@
       color: #dce8f6;
       font-weight: 700;
     }
+    .availability-window-title {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 2.5rem;
+      height: 1.45rem;
+      display: flex;
+      align-items: center;
+      padding-left: 0.65rem;
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      font-weight: 700;
+      font-family: 'MS W98 UI', 'Trebuchet MS', Arial, sans-serif;
+      color: #fff;
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+      pointer-events: none;
+      z-index: 2;
+    }
     .availability-question {
       margin: 0;
       font-size: clamp(0.95rem, 1.75vw, 1.4rem);
@@ -375,6 +402,27 @@
     }
     .availability-yes {
       line-height: 1;
+    }
+    .availability-yes-link {
+      color: inherit;
+      text-decoration: none;
+      line-height: 1;
+    }
+    .availability-yes-link:hover,
+    .availability-yes-link:focus-visible {
+      text-decoration: underline;
+    }
+    .window-copyright {
+      position: absolute;
+      left: 0.72rem;
+      bottom: 0.46rem;
+      font-size: 0.66rem;
+      letter-spacing: 0.02em;
+      opacity: 0.66;
+      color: inherit;
+      font-family: 'MS W98 UI', 'Trebuchet MS', Arial, sans-serif;
+      pointer-events: none;
+      user-select: none;
     }
     .settings-window {
       position: fixed;
@@ -493,7 +541,7 @@
   <link rel="preload" href="style.css" as="style" />
   <link rel="stylesheet" href="style.css" />
 </head>
-<body>
+<body class="card-style-poster">
   <header id="heroStage" class="hero-stage">
     <!--
     <div class="hero-title-row" id="heroPrimary">
@@ -528,45 +576,40 @@
           <p class="landing-window-subtitle">i'm a designer, creative, enjoyer of things</p>
         </div>
         <div class="landing-window-icons" aria-label="Quick links">
+          <a href="projects.html" class="landing-window-icon-link" aria-label="My work" title="My work">
+            <img src="assets/icons/windows/work.ico" alt="Work icon">
+            <span class="landing-window-icon-label">my work</span>
+          </a>
           <a href="about.html" class="landing-window-icon-link" aria-label="About me" title="About me">
             <img src="assets/icons/windows/about%20me.ico" alt="About me icon">
             <span class="landing-window-icon-label">about me</span>
           </a>
           <a href="contact.html" class="landing-window-icon-link" aria-label="Contact" title="Contact">
-            <img src="assets/icons/windows/connect.ico" alt="Connect icon">
+            <img src="assets/icons/windows/connectnew.ico" alt="Connect icon">
             <span class="landing-window-icon-label">contact</span>
-          </a>
-          <a href="projects.html" class="landing-window-icon-link" aria-label="My work" title="My work">
-            <img src="assets/icons/windows/work.ico" alt="Work icon">
-            <span class="landing-window-icon-label">my work</span>
           </a>
         </div>
       </div>
+      <small class="window-copyright">&copy; <span id="windowCopyrightYear"></span> Mihajlo Miletic</small>
     </article>
     <article class="availability-window" aria-label="Availability window">
       <div class="availability-window-dragbar" aria-hidden="true"></div>
+      <span class="availability-window-title">Available for Work</span>
       <p class="availability-question">Available for work?</p>
-      <p class="availability-answer"><span class="availability-arrow" aria-hidden="true">&rarr;</span><span class="availability-yes">YES!</span></p>
+      <p class="availability-answer"><span class="availability-arrow" aria-hidden="true">&rarr;</span><a class="availability-yes-link" href="contact.html" aria-label="Go to contact page">YES!</a></p>
     </article>
     <aside class="settings-window" aria-label="Screen settings">
       <div class="settings-window-dragbar" aria-hidden="true"></div>
-      <span class="settings-window-title">screen settings</span>
+      <span class="settings-window-title">color options</span>
       <div class="settings-window-group">
-        <p class="settings-window-heading">Color Theme</p>
+        <!-- Removed color theme heading -->
         <div class="settings-window-options">
-          <button type="button" class="settings-option" data-theme="default">default</button>
+          <button type="button" class="settings-option" data-theme="night">night mode (default)</button>
+          <button type="button" class="settings-option" data-theme="bright">bright mode</button>
+          <button type="button" class="settings-option" data-theme="classic">classic</button>
           <button type="button" class="settings-option" data-theme="lilac">lilac</button>
           <button type="button" class="settings-option" data-theme="sunset">sunset</button>
           <button type="button" class="settings-option" data-theme="mint">mint</button>
-          <button type="button" class="settings-option" data-theme="night">night</button>
-        </div>
-      </div>
-      <div class="settings-window-group">
-        <p class="settings-window-heading">Screen Mode</p>
-        <div class="settings-window-options">
-          <button type="button" class="settings-option" data-style="default">default</button>
-          <button type="button" class="settings-option" data-style="poster">windows</button>
-          <button type="button" class="settings-option" data-style="crt">crt</button>
         </div>
       </div>
     </aside>
@@ -577,7 +620,6 @@
     const navToolButtons = document.querySelectorAll('.nav-tool-button[data-dropdown-target]');
     const navDropdowns = document.querySelectorAll('.nav-dropdown');
     const themeDropdownItems = document.querySelectorAll('[data-theme]');
-    const styleDropdownItems = document.querySelectorAll('[data-style]');
     const landingWindow = document.querySelector('.landing-window');
     const landingMessage = document.querySelector('.landing-window-message');
     const landingSubtitle = document.querySelector('.landing-window-subtitle');
@@ -586,19 +628,19 @@
     const settingsWindow = document.querySelector('.settings-window');
     const availabilityQuestion = document.querySelector('.availability-question');
     const availabilityAnswer = document.querySelector('.availability-answer');
+    const windowCopyrightYear = document.getElementById('windowCopyrightYear');
 
-    const styleClassMap = {
-      default: '',
-      poster: 'card-style-poster',
-      crt: 'card-style-crt'
-    };
+    if (windowCopyrightYear) {
+      windowCopyrightYear.textContent = String(new Date().getFullYear());
+    }
 
     const colorThemeMap = {
-      default: '',
+      classic: '',
       lilac: 'theme-lilac',
       sunset: 'theme-sunset',
       mint: 'theme-mint',
-      night: 'theme-night'
+      night: 'theme-night',
+      bright: 'theme-bright'
     };
 
     const closeAllNavDropdowns = () => {
@@ -607,17 +649,10 @@
     };
 
     const syncNavDropdownSelection = () => {
-      const activeTheme = localStorage.getItem('preferredColorTheme') || 'default';
-      const activeStyle = localStorage.getItem('preferredCardStyle') || 'default';
+      const activeTheme = localStorage.getItem('preferredColorTheme') || 'night';
 
       themeDropdownItems.forEach(item => {
         const isActive = item.dataset.theme === activeTheme;
-        item.classList.toggle('selected', isActive);
-        item.setAttribute('aria-current', isActive ? 'true' : 'false');
-      });
-
-      styleDropdownItems.forEach(item => {
-        const isActive = item.dataset.style === activeStyle;
         item.classList.toggle('selected', isActive);
         item.setAttribute('aria-current', isActive ? 'true' : 'false');
       });
@@ -839,22 +874,6 @@
       );
     };
 
-    const applyStyle = (style) => {
-      Object.values(styleClassMap).forEach(styleClass => {
-        if (styleClass) {
-          document.body.classList.remove(styleClass);
-        }
-      });
-
-      if (styleClassMap[style]) {
-        document.body.classList.add(styleClassMap[style]);
-      }
-
-      localStorage.setItem('preferredCardStyle', style);
-      syncNavDropdownSelection();
-      updateLandingMessageContrast();
-    };
-
     const applyTheme = (theme) => {
       Object.values(colorThemeMap).forEach(themeClass => {
         if (themeClass) {
@@ -914,11 +933,9 @@
     });
 
     bindDatasetAction(themeDropdownItems, 'theme', applyTheme);
-    bindDatasetAction(styleDropdownItems, 'style', applyStyle);
 
-    applyTheme(localStorage.getItem('preferredColorTheme') || 'default');
-    applyStyle(localStorage.getItem('preferredCardStyle') || 'default');
-    updateLandingMessageContrast();
+  applyTheme(localStorage.getItem('preferredColorTheme') || 'night');
+  updateLandingMessageContrast();
 
     // Draggable windows
     const makeWindowDraggable = (windowEl, dragHandleEl) => {
@@ -1012,6 +1029,17 @@
     window.addEventListener('load', () => {
       requestAnimationFrame(resetAvailabilityWindowPosition);
       requestAnimationFrame(resetSettingsWindowPosition);
+      // Add popup animation to settings window by toggling class
+      if (settingsWindowEl) {
+        settingsWindowEl.classList.remove('popup-animate');
+        // Force reflow to restart animation
+        void settingsWindowEl.offsetWidth;
+        settingsWindowEl.classList.add('popup-animate');
+      }
+      // Add popup-animate class for settings window animation
+      const style = document.createElement('style');
+      style.innerHTML = `.popup-animate { animation: retro-window-open 320ms steps(10, end) !important; }`;
+      document.head.appendChild(style);
     });
     window.addEventListener('resize', resetAvailabilityWindowPosition);
     window.addEventListener('resize', resetSettingsWindowPosition);
@@ -1059,12 +1087,18 @@
           { x: 2, y: 0 },
           { x: 0, y: -2 },
           { x: 0, y: 2 }
+        ],
+        big: [
+          { x: 0, y: 0 },
+          { x: -1, y: 0 }, { x: 1, y: 0 }, { x: 0, y: -1 }, { x: 0, y: 1 },
+          { x: -2, y: 0 }, { x: 2, y: 0 }, { x: 0, y: -2 }, { x: 0, y: 2 },
+          { x: -1, y: -1 }, { x: 1, y: 1 }, { x: -1, y: 1 }, { x: 1, y: -1 }
         ]
       };
 
       const getFieldWidth = () => Math.max(1, Math.ceil(window.innerWidth / pixelSize));
       const getFieldHeight = () => Math.max(1, Math.ceil(window.innerHeight / pixelSize));
-      const getStarCount = () => Math.max(160, Math.floor((window.innerWidth * window.innerHeight) / 6000));
+      const getStarCount = () => Math.max(180, Math.floor((window.innerWidth * window.innerHeight) / 5200));
 
       const resizeCanvas = () => {
         canvas.width = Math.floor(window.innerWidth * pixelRatio);
@@ -1087,9 +1121,12 @@
         const fieldWidth = getFieldWidth();
         const fieldHeight = getFieldHeight();
 
+        // Add normal stars
         for (let index = 0; index < getStarCount(); index += 1) {
           const seed = Math.random();
           const type = seed > 0.97 ? 'sparkle' : seed > 0.82 ? 'plus' : 'dot';
+          // 20% of stars are color-shifting
+          const colorShift = Math.random() < 0.2;
           stars.push({
             x: Math.floor(Math.random() * fieldWidth),
             y: Math.floor(Math.random() * fieldHeight),
@@ -1098,10 +1135,39 @@
             twinkleOffset: Math.random() * Math.PI * 2,
             twinkleSpeed: Math.random() * 0.035 + 0.01,
             variant: Math.random() > 0.5 ? 1 : 0,
-            shiftTimer: Math.floor(Math.random() * 160) + 90
+            shiftTimer: Math.floor(Math.random() * 160) + 90,
+            colorShift,
+            rgb: colorShift ? randomRGB() : null,
+            rgbTimer: colorShift ? Math.floor(Math.random() * 60) + 40 : 0
+          });
+        }
+        // Add a few big, bright stars
+        for (let i = 0; i < 6; i++) {
+          const colorShift = Math.random() < 0.5;
+          stars.push({
+            x: Math.floor(Math.random() * fieldWidth),
+            y: Math.floor(Math.random() * fieldHeight),
+            type: 'big',
+            baseAlpha: 0.95 + Math.random() * 0.05,
+            twinkleOffset: Math.random() * Math.PI * 2,
+            twinkleSpeed: Math.random() * 0.02 + 0.01,
+            variant: 1,
+            shiftTimer: Math.floor(Math.random() * 160) + 90,
+            colorShift,
+            rgb: colorShift ? randomRGB() : null,
+            rgbTimer: colorShift ? Math.floor(Math.random() * 60) + 40 : 0
           });
         }
       };
+
+      // Helper for random RGB color
+      function randomRGB() {
+        if (Math.random() < 0.33) return null; // sometimes white
+        const r = Math.floor(180 + Math.random() * 75);
+        const g = Math.floor(180 + Math.random() * 75);
+        const b = Math.floor(180 + Math.random() * 75);
+        return `rgb(${r},${g},${b})`;
+      }
 
       const spawnComet = () => {
         const fieldWidth = getFieldWidth();
@@ -1142,7 +1208,14 @@
 
       const drawPattern = (star, brightness) => {
         const pattern = starPatterns[star.type];
-        const color = brightness >= 0.92 ? '#ffffff' : brightness >= 0.72 ? '#d8d8d8' : '#9a9a9a';
+        let color;
+        if (star.colorShift && star.rgb) {
+          color = star.rgb;
+        } else if (star.type === 'big') {
+          color = brightness >= 0.92 ? '#fffbe6' : brightness >= 0.72 ? '#ffe9a8' : '#e6d7a9';
+        } else {
+          color = brightness >= 0.92 ? '#ffffff' : brightness >= 0.72 ? '#d8d8d8' : '#9a9a9a';
+        }
 
         bufferContext.fillStyle = color;
         for (const pixel of pattern) {
@@ -1206,6 +1279,15 @@
 
         for (const star of stars) {
           star.twinkleOffset += star.twinkleSpeed;
+
+          // Animate color-shifting stars
+          if (star.colorShift) {
+            star.rgbTimer--;
+            if (star.rgbTimer <= 0) {
+              star.rgb = randomRGB();
+              star.rgbTimer = Math.floor(Math.random() * 60) + 40;
+            }
+          }
 
           star.shiftTimer -= 1;
           if (star.shiftTimer <= 0) {

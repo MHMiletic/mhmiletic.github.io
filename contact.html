@@ -1,171 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8" />
-	<title>Contact â€“ Miletic</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<style>
-		/* Critical nav paint to prevent first-frame flashes before style.css is ready. */
-		body { margin: 0; background: #1a2233; color: #e6edf3; }
-		.site-nav { position: sticky; top: 0; z-index: 1100; width: 100%; border-bottom: 1px solid rgba(255,255,255,0.08); background: linear-gradient(90deg, rgba(11,16,27,0.98), rgba(8,13,24,0.98)); }
-		.site-nav-inner { width: min(100% - 40px, 1800px); margin: 0 auto; min-height: 86px; display: flex; align-items: center; justify-content: flex-start; position: relative; }
-		.site-logo { color: #f5f7fb; text-decoration: none; font-family: "Times New Roman", Georgia, serif; font-size: clamp(2.25rem, 3vw, 3.1rem); line-height: 1; }
-		.site-nav-links { position: absolute; left: 50%; transform: translateX(-50%); display: flex; gap: 2rem; }
-		.site-nav-links a { color: rgba(240,243,248,0.66); text-decoration: none; font-size: 1.01rem; }
-	</style>
-	<link rel="preload" href="style.css" as="style" />
-	<link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8" />
+  <title>Contact - Miletic</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Contact Mihajlo Miletic" />
+  <link rel="preload" href="style.css" as="style" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="window-system.css" />
 </head>
 <body>
-	<header>
-		<h1>Contact</h1>
-	</header>
-	<main>
-		<section>
-			<h2>Contact Information</h2>
-			<p>Email: <a href="mailto:mmiletic853@gmail.com">mmiletic853@gmail.com</a></p>
-			<div class="contact-links">
-				<button type="button" id="copyEmailBtn" class="hero-button">Copy Email</button>
-				<a href="projects.html">View Projects</a>
-				<a href="about.html">About Me</a>
-			</div>
-		</section>
-		<section>
-			<h2>Quick Inquiry</h2>
-			<form id="contactForm" class="contact-form">
-				<label for="contactName">Name</label>
-				<input id="contactName" name="contactName" type="text" required />
+  <main class="window-page-stage">
+    <article class="landing-window" aria-label="Contact page window">
+      <div class="landing-window-dragbar" aria-hidden="true"></div>
+      <span class="landing-window-title">Contact</span>
+      <div class="window-content">
+        <h1>Let us build something together.</h1>
+        <p>Use the form below and I will get back to you.</p>
 
-				<label for="contactEmail">Email</label>
-				<input id="contactEmail" name="contactEmail" type="email" required />
+        <form id="contactForm" class="page-contact-form">
+          <input type="text" name="name" placeholder="Your name" required />
+          <input type="email" name="email" placeholder="Your email" required />
+          <textarea name="message" placeholder="Your message" rows="7" required></textarea>
+          <button
+            type="button"
+            id="inputFontToggle"
+            class="input-font-toggle load-more"
+            aria-pressed="false"
+            title="Switch between retro and default font in message fields"
+          >
+            input font: retro
+          </button>
+          <button type="submit" class="load-more">Send</button>
+        </form>
 
-				<label for="contactSubject">Subject</label>
-				<input id="contactSubject" name="contactSubject" type="text" required />
+        <p id="status" class="status" aria-live="polite"></p>
 
-				<label for="contactMessage">Message</label>
-				<textarea id="contactMessage" name="contactMessage" rows="6" required></textarea>
+      </div>
+    </article>
+  </main>
 
-				<button type="submit" class="load-more">Send via Email</button>
-			</form>
-		</section>
-	</main>
-	<footer>
-		<p>Â© <span id="year"></span> Mihajlo Miletic</p>
-	</footer>
-	<script>
-		const styleClassMap = {
-			default: '',
-			poster: 'card-style-poster',
-			crt: 'card-style-crt'
-		};
-		const colorThemeMap = {
-			lilac: 'theme-lilac',
-			sunset: 'theme-sunset',
-			mint: 'theme-mint',
-			night: 'theme-night'
-		};
-		const preferredCardStyle = localStorage.getItem('preferredCardStyle');
-		if (preferredCardStyle && styleClassMap[preferredCardStyle]) {
-			document.body.classList.add(styleClassMap[preferredCardStyle]);
-		}
-		const preferredColorTheme = localStorage.getItem('preferredColorTheme');
-		if (preferredColorTheme && colorThemeMap[preferredColorTheme]) {
-			document.body.classList.add(colorThemeMap[preferredColorTheme]);
-		}
+  <script src="window-system.js"></script>
+  <script>
+    const form = document.getElementById('contactForm');
+    const status = document.getElementById('status');
+    const inputFontToggle = document.getElementById('inputFontToggle');
+    const inputFontPreferenceKey = 'contactInputDefaultFont';
 
-		const retroSoundEnabled = localStorage.getItem('retroSoundEnabled') === 'true';
-		let audioContext = null;
-		let lastBeepAt = 0;
+    const setInputFontMode = (useDefaultFont) => {
+      form.classList.toggle('default-input-font', useDefaultFont);
+      inputFontToggle.setAttribute('aria-pressed', useDefaultFont ? 'true' : 'false');
+      inputFontToggle.textContent = useDefaultFont ? 'input font: default' : 'input font: retro';
+      localStorage.setItem(inputFontPreferenceKey, useDefaultFont ? 'true' : 'false');
+    };
 
-		const ensureAudioContext = () => {
-			if (!audioContext) {
-				const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-				if (!AudioContextClass) {
-					return null;
-				}
-				audioContext = new AudioContextClass();
-			}
-			if (audioContext.state === 'suspended') {
-				audioContext.resume();
-			}
-			return audioContext;
-		};
+    const prefersDefaultFont = localStorage.getItem(inputFontPreferenceKey) === 'true';
+    setInputFontMode(prefersDefaultFont);
 
-		const playRetroBeep = () => {
-			if (!retroSoundEnabled || !document.body.classList.contains('card-style-poster')) {
-				return;
-			}
-			const now = performance.now();
-			if (now - lastBeepAt < 85) {
-				return;
-			}
-			lastBeepAt = now;
+    inputFontToggle.addEventListener('click', () => {
+      const currentlyDefault = form.classList.contains('default-input-font');
+      setInputFontMode(!currentlyDefault);
+    });
 
-			const context = ensureAudioContext();
-			if (!context || context.state !== 'running') {
-				return;
-			}
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      status.textContent = 'Sending...';
 
-			const oscillator = context.createOscillator();
-			const gainNode = context.createGain();
-			oscillator.type = 'square';
-			oscillator.frequency.setValueAtTime(880, context.currentTime);
-			oscillator.frequency.setValueAtTime(620, context.currentTime + 0.035);
-			gainNode.gain.setValueAtTime(0.0001, context.currentTime);
-			gainNode.gain.exponentialRampToValueAtTime(0.035, context.currentTime + 0.01);
-			gainNode.gain.exponentialRampToValueAtTime(0.0001, context.currentTime + 0.08);
-			oscillator.connect(gainNode);
-			gainNode.connect(context.destination);
-			oscillator.start();
-			oscillator.stop(context.currentTime + 0.09);
-		};
+      const formData = new FormData(form);
 
-		document.addEventListener('pointerover', (event) => {
-			const currentTarget = event.target.closest('a,button,input,select,textarea,.filter-chip,.hero-button');
-			if (!currentTarget) {
-				return;
-			}
-			const previousTarget = event.relatedTarget && event.relatedTarget.closest
-				? event.relatedTarget.closest('a,button,input,select,textarea,.filter-chip,.hero-button')
-				: null;
-			if (currentTarget === previousTarget) {
-				return;
-			}
-			playRetroBeep();
-		});
-
-		document.addEventListener('focusin', (event) => {
-			if (event.target.closest('a,button,input,select,textarea,.filter-chip,.hero-button')) {
-				playRetroBeep();
-			}
-		});
-
-		document.getElementById('year').textContent = new Date().getFullYear();
-
-		const copyEmailBtn = document.getElementById('copyEmailBtn');
-		copyEmailBtn.addEventListener('click', async () => {
-			const targetEmail = 'mmiletic853@gmail.com';
-			if (navigator.clipboard && navigator.clipboard.writeText) {
-				await navigator.clipboard.writeText(targetEmail);
-				copyEmailBtn.textContent = 'Email Copied';
-				setTimeout(() => {
-					copyEmailBtn.textContent = 'Copy Email';
-				}, 1400);
-			}
-		});
-
-		const contactForm = document.getElementById('contactForm');
-		contactForm.addEventListener('submit', (event) => {
-			event.preventDefault();
-			const name = document.getElementById('contactName').value.trim();
-			const email = document.getElementById('contactEmail').value.trim();
-			const subject = document.getElementById('contactSubject').value.trim();
-			const message = document.getElementById('contactMessage').value.trim();
-			const body = `Name: ${name}\nEmail: ${email}\n\n${message}`;
-			window.location.href = `mailto:mmiletic853@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-		});
-	</script>
-	<script src="windows-sky-effects.js"></script>
-	<script src="crt-reticle.js"></script>
+      fetch('https://script.google.com/macros/s/AKfycbzeR-Ek8bIuNkkl87gBWiwdDVFGjLB-jfzYOjAYjLCxL3Co9UZ7GjrRqCh8xpKa4HBQUw/exec', {
+        method: 'POST',
+        body: formData
+      })
+      .then((response) => response.text())
+      .then(() => {
+        status.textContent = 'Message sent. Thank you!';
+        form.reset();
+      })
+      .catch(() => {
+        status.textContent = 'Error sending message.';
+      });
+    });
+  </script>
 </body>
 </html>
