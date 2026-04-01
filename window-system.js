@@ -96,6 +96,8 @@
     const landingWindow = document.querySelector('.landing-window');
     const settingsWindow = document.querySelector('.settings-window');
     const quickNavWindow = document.querySelector('.quick-nav-window');
+    const availabilityQuestion = document.querySelector('.availability-question');
+    const availabilityAnswer = document.querySelector('.availability-answer');
     if (!landingWindow) {
       return;
     }
@@ -134,6 +136,17 @@
     }
 
     const baseColor = isLightBackground ? '#1a2d45' : '#eef7ff';
+    if (availabilityQuestion) {
+      availabilityQuestion.style.color = baseColor;
+      availabilityQuestion.style.opacity = isLightBackground ? '0.84' : '0.72';
+    }
+    if (availabilityAnswer) {
+      availabilityAnswer.style.color = baseColor;
+      availabilityAnswer.style.textShadow = isLightBackground
+        ? '0 1px 0 rgba(255, 255, 255, 0.4)'
+        : '0 2px 8px rgba(0, 0, 0, 0.32)';
+    }
+
     rootStyle.setProperty('--settings-heading-fg', baseColor);
     rootStyle.setProperty('--settings-heading-opacity', isLightBackground ? '0.82' : '0.78');
     rootStyle.setProperty('--settings-option-fg', baseColor);
@@ -212,16 +225,27 @@
   };
 
   const injectSystemWindows = () => {
-    if (!document.querySelector('.availability-window')) {
-      const availability = document.createElement('article');
+    const currentFile = window.location.pathname.toLowerCase().split('/').pop() || 'index.html';
+    const isContactPage = currentFile === 'contact.html';
+
+    const availability = document.querySelector('.availability-window') || document.createElement('article');
+    if (!availability.classList.contains('availability-window')) {
       availability.className = 'availability-window';
-      availability.setAttribute('aria-label', 'Availability window');
-      availability.innerHTML = `
-        <div class="availability-window-dragbar" aria-hidden="true"></div>
-        <span class="availability-window-title">Available for Work</span>
-        <p class="availability-question">Available for work?</p>
-        <p class="availability-answer"><span class="availability-arrow" aria-hidden="true">&rarr;</span><a class="availability-yes-link" href="contact.html" aria-label="Go to contact page">YES!</a></p>
-      `;
+    }
+    availability.setAttribute('aria-label', 'Availability window');
+
+    const yesMarkup = isContactPage
+      ? '<span class="availability-yes-link is-disabled" aria-disabled="true">YES!</span>'
+      : '<a class="availability-yes-link no-retro-highlight" href="contact.html" aria-label="Go to contact page">YES!</a>';
+
+    availability.innerHTML = `
+      <div class="availability-window-dragbar" aria-hidden="true"></div>
+      <span class="availability-window-title">Available for Work</span>
+      <p class="availability-question">Available for work?</p>
+      <p class="availability-answer"><span class="availability-arrow" aria-hidden="true">&rarr;</span>${yesMarkup}</p>
+    `;
+
+    if (!availability.parentElement) {
       document.body.appendChild(availability);
     }
 
@@ -277,10 +301,18 @@
 
       document.querySelectorAll('.quick-nav-icon-link').forEach((link) => {
         const href = (link.getAttribute('href') || '').toLowerCase();
-        const current = window.location.pathname.toLowerCase();
-        if (href && current.endsWith(href)) {
+        const hrefFile = href.split('/').pop();
+        const quickNavCurrentFile = window.location.pathname.toLowerCase().split('/').pop() || 'index.html';
+
+        if (hrefFile && quickNavCurrentFile === hrefFile) {
           link.classList.add('active-page');
+          link.classList.add('is-current-page');
           link.setAttribute('aria-current', 'page');
+          link.setAttribute('aria-disabled', 'true');
+          link.setAttribute('tabindex', '-1');
+          link.addEventListener('click', (event) => {
+            event.preventDefault();
+          });
         }
       });
     }

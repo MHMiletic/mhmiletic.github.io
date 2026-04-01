@@ -1,7 +1,14 @@
 (() => {
   const safeEncode = (path) => encodeURI(path || '');
 
-  const projectUrl = (slug) => `project.html?slug=${encodeURIComponent(slug)}`;
+  const projectUrl = (slug, backTo = '') => {
+    const params = new URLSearchParams();
+    params.set('slug', slug);
+    if (backTo) {
+      params.set('back', backTo);
+    }
+    return `project.html?${params.toString()}`;
+  };
   const collectionUrl = (slug) => `collection.html?slug=${encodeURIComponent(slug)}`;
 
   const getItemCategoryKeys = (item) => {
@@ -57,6 +64,28 @@
             <h3>${collection.title}</h3>
             <p>${collection.description}</p>
             <p class="project-card-meta">${categoryText} • ${members.length} works • ${shotCount} shots</p>
+          </div>
+        </a>
+      </article>
+    `;
+  };
+
+  const renderCollectionMemberCard = (project, collectionSlug) => {
+    const shotCount = Array.isArray(project.shots) ? project.shots.length : 1;
+    const categoryKeys = getProjectCategoryKeys(project);
+    const categoryLabels = [...new Set(categoryKeys.map(getCategoryLabel).filter(Boolean))];
+    const categoryText = categoryLabels.join(' • ');
+    const folderKey = getProjectFolderKey(project);
+    const backTo = `collection.html?slug=${encodeURIComponent(collectionSlug)}`;
+
+    return `
+      <article class="page-project-card" data-category="${categoryKeys.join(' ')}" data-folder="${folderKey}">
+        <a class="project-card-link" href="${projectUrl(project.slug, backTo)}" aria-label="Open ${project.title}">
+          <img src="${safeEncode(project.cover)}" alt="${project.title} preview" loading="lazy" />
+          <div class="page-project-card-body">
+            <h3>${project.title}</h3>
+            <p>${project.description}</p>
+            <p class="project-card-meta">${categoryText} • ${shotCount} shot${shotCount === 1 ? '' : 's'}</p>
           </div>
         </a>
       </article>
@@ -204,6 +233,7 @@
 
     const params = new URLSearchParams(window.location.search);
     const slug = params.get('slug') || '';
+    const back = params.get('back') || '';
     const project = PROJECTS_BY_SLUG[slug];
 
     if (!project) {
@@ -235,10 +265,13 @@
       </button>
     `;
 
+    const backHref = back || 'projects.html';
+    const preferHrefAttribute = back ? ' data-prefer-href="true"' : '';
+
     detail.innerHTML = `
       <div class="project-detail-heading">
         <h1>${project.title}</h1>
-        <a href="projects.html" class="project-detail-symbol-link" data-history-back="true" aria-label="Return to previous page" title="Return">
+        <a href="${backHref}" class="project-detail-symbol-link" data-history-back="true"${preferHrefAttribute} aria-label="Return to previous page" title="Return">
           <img class="project-detail-symbol" src="assets/icons/windows/return.ico" alt="Return icon" loading="lazy">
         </a>
       </div>
@@ -303,11 +336,16 @@
     const members = sortProjects(getCollectionProjects(collection), 'date-desc');
 
     collectionDetail.innerHTML = `
-      <h1>${collection.title}</h1>
+      <div class="project-detail-heading">
+        <h1>${collection.title}</h1>
+        <a href="projects.html" class="project-detail-symbol-link" data-history-back="true" aria-label="Return to previous page" title="Return">
+          <img class="project-detail-symbol" src="assets/icons/windows/return.ico" alt="Return icon" loading="lazy">
+        </a>
+      </div>
       <p class="project-detail-meta">${categoryText} • ${members.length} works</p>
       <p>${collection.description}</p>
       <section class="page-project-grid" aria-label="${collection.title} projects">
-        ${members.map(renderProjectCard).join('')}
+        ${members.map((member) => renderCollectionMemberCard(member, collection.slug)).join('')}
       </section>
     `;
   };
@@ -365,12 +403,14 @@
       })();
 
       returnLinks.forEach((link) => {
-        if (sameOriginReferrer) {
+        const preferHref = link.dataset.preferHref === 'true';
+
+        if (sameOriginReferrer && !preferHref) {
           link.href = sameOriginReferrer;
         }
 
         link.addEventListener('click', (event) => {
-          if (!sameOriginReferrer || window.history.length <= 1) {
+          if (preferHref || !sameOriginReferrer || window.history.length <= 1) {
             return;
           }
 

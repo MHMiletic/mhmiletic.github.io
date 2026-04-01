@@ -906,6 +906,328 @@ button.load-more:hover {
   margin-top: 1rem;
 }
 
+body.about-page .landing-window {
+  width: min(900px, 94vw);
+}
+
+body.about-page .about-window-content {
+  padding-top: 0.2rem;
+}
+
+.myspace-about {
+  --myspace-blue: var(--poster-title-end, #2b54b8);
+  --myspace-blue-light: color-mix(in srgb, var(--poster-title-start, #7ca9e8) 74%, #ffffff 26%);
+  --myspace-panel: color-mix(in srgb, var(--poster-card, #f3f4f8) 90%, #ffffff 10%);
+  --myspace-panel-soft: color-mix(in srgb, var(--poster-card, #f3f4f8) 78%, #ffffff 22%);
+  --myspace-border: var(--poster-border, #6e7f9c);
+  --myspace-text: var(--poster-text, #12223f);
+  --myspace-link: var(--poster-accent, #163c9d);
+  --myspace-window-surface: color-mix(in srgb, var(--poster-bg, #dfe8fa) 16%, #ffffff 84%);
+  color: var(--myspace-text);
+  font-family: 'MS W98 UI', 'Trebuchet MS', Arial, sans-serif;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  overflow: hidden;
+  box-shadow: none;
+  animation: about-myspace-in 340ms ease-out both;
+}
+
+.myspace-about a {
+  color: var(--myspace-link);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+.myspace-about a:hover,
+.myspace-about a:focus-visible {
+  color: color-mix(in srgb, var(--myspace-link) 70%, #000000 30%);
+}
+
+.myspace-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  padding: 0.42rem 0.7rem;
+  background: linear-gradient(180deg, var(--poster-title-start, #3b66d0), var(--myspace-blue));
+  border-bottom: 2px solid var(--myspace-border);
+}
+
+.myspace-brand {
+  color: var(--poster-window-icon, #ffffff);
+  font-size: 1rem;
+  letter-spacing: 0.03em;
+  font-weight: 700;
+  font-family: 'MS W98 UI', 'Trebuchet MS', Arial, sans-serif;
+  text-transform: lowercase;
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.28);
+}
+
+.myspace-toolbar-links {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.myspace-toolbar-links a {
+  color: var(--poster-window-icon, #f2f6ff);
+  text-decoration: none;
+  font-size: 0.82rem;
+  font-weight: 700;
+  font-family: 'MS W98 UI', 'Trebuchet MS', Arial, sans-serif;
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.25);
+}
+
+.myspace-toolbar-links a:hover,
+.myspace-toolbar-links a:focus-visible {
+  text-decoration: underline;
+}
+
+.myspace-grid {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.86fr) minmax(0, 1.42fr);
+  gap: 0.75rem;
+  padding: 0.72rem;
+}
+
+.myspace-left-col,
+.myspace-right-col {
+  display: grid;
+  gap: 0.62rem;
+  align-content: start;
+}
+
+.myspace-box {
+  border: 1px solid color-mix(in srgb, var(--myspace-border) 74%, #ffffff 26%);
+  background: color-mix(in srgb, var(--myspace-panel) 92%, #ffffff 8%);
+  box-shadow: none;
+}
+
+body.about-page .myspace-box h1,
+body.about-page .myspace-box h2,
+body.about-page .myspace-box p,
+body.about-page .myspace-box li,
+body.about-page .myspace-box th,
+body.about-page .myspace-box td {
+  margin: 0;
+  font-family: 'MS W98 UI', 'Trebuchet MS', Arial, sans-serif;
+  color: var(--myspace-text);
+}
+
+.myspace-hello-box {
+  text-align: center;
+  padding: 0.65rem;
+}
+
+.myspace-hello-box h1 {
+  text-align: center;
+  font-size: clamp(1.35rem, 2.4vw, 1.8rem);
+  color: var(--myspace-link);
+  margin-bottom: 0.55rem;
+}
+
+.myspace-mini-profile {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  grid-template-columns: 118px minmax(0, 1fr);
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.myspace-avatar {
+  margin-left: auto;
+  margin-right: auto;
+  width: 135px;
+  aspect-ratio: 32 / 41;
+  box-sizing: border-box;
+  border: 2px solid var(--myspace-border);
+  padding: 2px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 30% 24%, color-mix(in srgb, var(--poster-title-start, #9eb8f3) 54%, #ffffff 46%), color-mix(in srgb, var(--poster-title-end, #6f8fd8) 82%, #000000 18%) 62%, color-mix(in srgb, var(--poster-border, #4767b6) 84%, #000000 16%) 100%);
+  display: grid;
+  place-items: center;
+  color: var(--poster-window-icon, #eef4ff);
+  font-size: 2rem;
+  font-weight: 700;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.myspace-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center center;
+  transform: scaleX(-1);
+  display: block;
+}
+
+.myspace-action-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.34rem;
+}
+
+.myspace-action-list a {
+  font-size: 0.98rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.myspace-action-list a:hover,
+.myspace-action-list a:focus-visible {
+  text-decoration: underline;
+}
+
+.myspace-url {
+  margin-top: 0.6rem;
+  font-size: 0.83rem;
+  color: color-mix(in srgb, var(--myspace-text) 72%, #6b7f9f 28%);
+  word-break: break-all;
+}
+
+.myspace-box-title {
+  padding: 0.38rem 0.48rem 0.3rem;
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: #ffffff;
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.26);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--poster-title-start, #7ca9e8) 86%, #ffffff 14%), color-mix(in srgb, var(--poster-title-end, #2b54b8) 84%, #000000 16%));
+  border-bottom: 1px solid color-mix(in srgb, var(--myspace-border) 76%, #000000 24%);
+}
+
+body.about-page .myspace-box h2.myspace-box-title {
+  color: #ffffff;
+}
+
+.myspace-gold {
+  color: #ffffff;
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.26);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--poster-title-start, #7ca9e8) 86%, #ffffff 14%), color-mix(in srgb, var(--poster-title-end, #2b54b8) 84%, #000000 16%));
+  border-bottom-color: color-mix(in srgb, var(--myspace-border) 76%, #000000 24%);
+}
+
+.myspace-box p,
+.myspace-status-line,
+.myspace-interest-list,
+.myspace-table {
+  margin: 0;
+  padding: 0.44rem 0.52rem;
+}
+
+.myspace-status-line + .myspace-status-line {
+  padding-top: 0.04rem;
+}
+
+.myspace-interest-list {
+  list-style: square;
+  padding-left: 1.75rem;
+  display: grid;
+  gap: 0.25rem;
+}
+
+.myspace-top-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.5rem;
+  padding: 0.5rem;
+}
+
+.myspace-top-card {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.myspace-top-name {
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  min-height: 1.7rem;
+}
+
+.myspace-top-thumb {
+  border: 1px solid color-mix(in srgb, var(--myspace-border) 74%, #ffffff 26%);
+  min-height: 74px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(145deg, color-mix(in srgb, var(--poster-card, #cedcf3) 68%, #ffffff 32%), color-mix(in srgb, var(--poster-bg, #aebfdf) 72%, #ffffff 28%));
+  color: color-mix(in srgb, var(--myspace-text) 86%, #21457f 14%);
+  font-size: 1.06rem;
+  font-weight: 700;
+  text-align: center;
+  padding: 0.35rem;
+}
+
+.myspace-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.84rem;
+}
+
+.myspace-table th,
+.myspace-table td {
+  border: 1px solid color-mix(in srgb, var(--myspace-border) 64%, #ffffff 36%);
+  padding: 0.35rem 0.42rem;
+  vertical-align: top;
+}
+
+.myspace-table th {
+  background: color-mix(in srgb, var(--myspace-blue-light) 34%, #ffffff 66%);
+  text-align: left;
+}
+
+@keyframes about-myspace-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 980px) {
+  .myspace-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .myspace-top-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .myspace-toolbar {
+    justify-content: center;
+  }
+
+  .myspace-mini-profile {
+    grid-template-columns: 1fr;
+  }
+
+  .myspace-avatar {
+    width: 100%;
+    max-width: 140px;
+    margin: 0 auto;
+  }
+
+  .myspace-action-list {
+    justify-items: center;
+    text-align: center;
+  }
+
+  .myspace-top-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .about-top-row {
   display: flex;
   align-items: flex-start;
@@ -1208,8 +1530,8 @@ body.theme-lilac {
 body.theme-sunset {
   --availability-color: #fbd8be;
   --availability-glow: rgba(251, 216, 190, 0.34);
-  --name-base-color: #f7b17c;
-  --theme-poster-bg: #f7b17c;
+  --name-base-color: #e79a63;
+  --theme-poster-bg: #e79a63;
   --theme-poster-text: #43150f;
   --theme-poster-card: #ffe5d0;
   --theme-poster-border: #8b2d16;

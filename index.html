@@ -408,6 +408,11 @@
       text-decoration: none;
       line-height: 1;
     }
+    .availability-yes-link.is-disabled {
+      opacity: 0.58;
+      cursor: default;
+      text-decoration: none;
+    }
     .availability-yes-link:hover,
     .availability-yes-link:focus-visible {
       text-decoration: underline;
@@ -596,7 +601,7 @@
       <div class="availability-window-dragbar" aria-hidden="true"></div>
       <span class="availability-window-title">Available for Work</span>
       <p class="availability-question">Available for work?</p>
-      <p class="availability-answer"><span class="availability-arrow" aria-hidden="true">&rarr;</span><a class="availability-yes-link" href="contact.html" aria-label="Go to contact page">YES!</a></p>
+      <p class="availability-answer"><span class="availability-arrow" aria-hidden="true">&rarr;</span><a class="availability-yes-link no-retro-highlight" href="contact.html" aria-label="Go to contact page">YES!</a></p>
     </article>
     <aside class="settings-window" aria-label="Screen settings">
       <div class="settings-window-dragbar" aria-hidden="true"></div>
@@ -936,6 +941,16 @@
 
   applyTheme(localStorage.getItem('preferredColorTheme') || 'night');
   updateLandingMessageContrast();
+
+    const availabilityYesLink = document.querySelector('.availability-yes-link');
+    const currentFile = window.location.pathname.toLowerCase().split('/').pop() || 'index.html';
+    if (availabilityYesLink && currentFile === 'contact.html') {
+      const disabledLabel = document.createElement('span');
+      disabledLabel.className = 'availability-yes-link is-disabled';
+      disabledLabel.setAttribute('aria-disabled', 'true');
+      disabledLabel.textContent = availabilityYesLink.textContent || 'YES!';
+      availabilityYesLink.replaceWith(disabledLabel);
+    }
 
     // Draggable windows
     const makeWindowDraggable = (windowEl, dragHandleEl) => {

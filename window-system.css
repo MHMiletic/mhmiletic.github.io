@@ -240,6 +240,12 @@
   line-height: 1;
 }
 
+.availability-yes-link.is-disabled {
+  opacity: 0.58;
+  cursor: default;
+  text-decoration: none;
+}
+
 .availability-yes-link:hover,
 .availability-yes-link:focus-visible {
   text-decoration: underline;
@@ -509,6 +515,27 @@
 .quick-nav-icon-link.active-page .quick-nav-icon-label {
   opacity: 1;
   text-shadow: 0 1px 5px rgba(0, 0, 0, 0.32);
+}
+
+.quick-nav-icon-link.is-current-page {
+  pointer-events: none;
+  opacity: 0.52;
+  transform: none;
+}
+
+.quick-nav-icon-link.is-current-page::before,
+.quick-nav-icon-link.is-current-page::after {
+  opacity: 0 !important;
+}
+
+.quick-nav-icon-link.is-current-page img {
+  filter: grayscale(1) brightness(0.88);
+  transform: none;
+}
+
+.quick-nav-icon-link.is-current-page .quick-nav-icon-label {
+  opacity: 0.7;
+  text-shadow: none;
 }
 
 body.card-style-poster .quick-nav-window {
