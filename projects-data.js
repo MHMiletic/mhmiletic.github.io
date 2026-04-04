@@ -13,7 +13,8 @@
 //   date: '2026-03-22',
 //   cover: 'projects/folder/cover-image.png',
 //   shots: ['projects/folder/cover-image.png'],
-//   description: 'Short project description.'
+//   description: 'Short project description.',
+//   programs: ['Photoshop', 'Illustrator'] // optional, displayed on the project page
 // }
 
 const PROJECT_CATEGORIES = {
@@ -65,12 +66,13 @@ const PROJECT_FOLDERS = {
 const PROJECTS = [
   {
     slug: 'zelda-cook-book',
-    title: 'Zelda Cook Book',
+    title: 'The Legend of Zelda cookbook',
     category: 'mock-ups',
+    programs: ['Photoshop', 'Blender', 'Illustrator'],
     date: '2026-02-25',
     cover: 'projects/mockups/Zelda Cookbook/COVER_ZELDA_alt.jpg',
     shots: ['projects/mockups/Zelda Cookbook/COVER_ZELDA_alt.jpg', 'projects/mockups/Zelda Cookbook/Zelda_cookbook.jpg'],
-    description: 'Cookbook concept with retro game-inspired art direction.'
+    description: 'A cookbook, meant to be in the style of "The Legend of Zelda Breath of The Wild".'
   },
   {
     slug: 'mountainrange',
@@ -144,6 +146,7 @@ const PROJECTS = [
     title: 'Kirby Hoodie',
     category: 'advertisement-ish',
     date: '2026-02-12',
+    programs: ['Photoshop', 'Blender'],
     cover: 'projects/hoodies/kirby1.png',
     shots: ['projects/hoodies/kirby1.png', 'projects/hoodies/kirby2.png', 'projects/hoodies/kirby3.png'],
     description: 'Apparel concept shown across multiple campaign shots.'
@@ -153,6 +156,7 @@ const PROJECTS = [
     title: 'Kira Alt Hoodie',
     category: 'advertisement-ish',
     date: '2026-02-11',
+    programs: ['Photoshop', 'Blender'],
     cover: 'projects/hoodies/kira_alt1.png',
     shots: ['projects/hoodies/kira_alt1.png', 'projects/hoodies/kira_alt2.png', 'projects/hoodies/kira_alt3.png'],
     description: 'Variant hoodie design presented in a 3-shot sequence.'
@@ -162,6 +166,7 @@ const PROJECTS = [
     title: 'JJK Gojo Alt Hoodie',
     category: 'advertisement-ish',
     date: '2026-02-10',
+    programs: ['Photoshop', 'Blender'],
     cover: 'projects/hoodies/jjk_gojo_alt1.png',
     shots: ['projects/hoodies/jjk_gojo_alt1.png', 'projects/hoodies/jjk_gojo_alt2.png', 'projects/hoodies/jjk_gojo_alt3.png'],
     description: 'Hoodie artwork with alternate shot set for promo use.'
@@ -171,6 +176,7 @@ const PROJECTS = [
     title: 'CSM Hoodie',
     category: 'advertisement-ish',
     date: '2026-02-09',
+    programs: ['Photoshop', 'Blender'],
     cover: 'projects/hoodies/csm1.png',
     shots: ['projects/hoodies/csm1.png', 'projects/hoodies/csm2.png', 'projects/hoodies/csm3.png'],
     description: 'Three-shot apparel concept with strong front-facing visual hook.'
@@ -180,6 +186,7 @@ const PROJECTS = [
     title: 'Berserk Hoodie',
     category: 'advertisement-ish',
     date: '2026-02-08',
+    programs: ['Photoshop', 'Blender'],
     cover: 'projects/hoodies/berserk1.png',
     shots: ['projects/hoodies/berserk1.png', 'projects/hoodies/berserk2.png', 'projects/hoodies/berserk3.png'],
     description: 'Branded hoodie concept presented as a campaign trio.'
@@ -189,6 +196,7 @@ const PROJECTS = [
     title: 'Berserk Overlap Alt Hoodie',
     category: 'advertisement-ish',
     date: '2026-02-07',
+    programs: ['Photoshop', 'Blender'],
     cover: 'projects/hoodies/berserk_overlap_alt1.png',
     shots: [
       'projects/hoodies/berserk_overlap_alt1.png',
@@ -202,6 +210,7 @@ const PROJECTS = [
     title: 'Where The Skies End',
     category: 'personal-projects',
     date: '2026-02-05',
+    programs: ['Photoshop', 'Blender'],
     cover: 'projects/passion/starset/where the skies end.png',
     shots: ['projects/passion/starset/where the skies end.png'],
     description: 'Personal visual narrative study.'
@@ -296,6 +305,18 @@ const getProjectCategoryKeys = (project) => {
   return [...new Set(
     categories
       .map((category) => String(category || '').trim())
+      .filter(Boolean)
+  )];
+};
+
+const getProjectPrograms = (project) => {
+  const source = Array.isArray(project && project.programs)
+    ? project.programs
+    : [project && project.programs ? project.programs : ''];
+
+  return [...new Set(
+    source
+      .map((program) => String(program || '').trim())
       .filter(Boolean)
   )];
 };

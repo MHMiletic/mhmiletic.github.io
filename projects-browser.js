@@ -243,6 +243,7 @@
 
     const categoryKeys = getProjectCategoryKeys(project);
     const categoryLabels = [...new Set(categoryKeys.map(getCategoryLabel).filter(Boolean))];
+    const programs = getProjectPrograms(project);
     const categoryText = categoryLabels.join(' • ');
     const sourceShots = Array.isArray(project.shots) && project.shots.length ? project.shots : [project.cover];
     const shots = [...new Set(sourceShots)]
@@ -277,6 +278,14 @@
       </div>
       <p class="project-detail-meta">${categoryText} • <span class="project-detail-date" title="upload date">${project.date}</span></p>
       <p>${project.description}</p>
+      ${programs.length ? `
+        <details class="project-detail-tools">
+          <summary>Programs used</summary>
+          <div class="project-detail-tools-list" aria-label="Programs used to make ${project.title}">
+            ${programs.map((program) => `<span class="project-detail-tool">${program}</span>`).join('')}
+          </div>
+        </details>
+      ` : ''}
       <section class="project-gallery" aria-label="${project.title} shots">
         <div class="project-featured-shot-wrap">
           <img id="projectFeaturedShot" class="project-featured-shot" src="${safeEncode(shots[0])}" alt="${project.title} featured shot" loading="lazy">

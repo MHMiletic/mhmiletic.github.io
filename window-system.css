@@ -771,6 +771,43 @@ body.theme-bright.card-style-poster .page-project-card.is-collection::after {
   cursor: help;
 }
 
+.project-detail-tools {
+  margin-top: 0.85rem;
+  padding: 0.65rem 0.8rem 0.8rem;
+  border: 2px solid var(--poster-border, #2a2169);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.project-detail-tools summary {
+  cursor: pointer;
+  font-size: 0.86rem;
+  font-weight: 700;
+  text-transform: lowercase;
+}
+
+.project-detail-tools[open] summary {
+  margin-bottom: 0.7rem;
+}
+
+.project-detail-tools-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.project-detail-tool {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0.25rem 0.55rem;
+  border: 1px solid var(--poster-border, #2a2169);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--poster-card, #d8d2ed) 78%, #ffffff 22%);
+  font-size: 0.78rem;
+  line-height: 1.2;
+}
+
 .project-gallery {
   margin-top: 0.85rem;
 }
